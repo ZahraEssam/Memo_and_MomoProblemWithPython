@@ -1,0 +1,1859 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memo and Momo · معمل حل المشكلات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#f6f8fc;--grid:#e4eaf4;--ink:#17213b;--mu:#66738c;--line:#d8dfec;--navy:#1d2a56;--navy2:#2c3d7a;
+ --gr:#16a34a;--gr2:#e8f8ee;--am:#d97706;--am2:#fff4dc;--bl:#2563eb;--bl2:#e8efff;--pu:#7c3aed;--pu2:#f2ecff;
+ --pk:#db2777;--pk2:#fdebf4;--cy:#0891b2;--cy2:#e2f7fb;--rd:#e11d48;--rd2:#ffe9ee;
+ --r:20px;--sh:0 1px 2px rgba(23,33,59,.05),0 12px 30px rgba(23,33,59,.08);
+ --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;--ar:"Baloo Bhaijaan 2",system-ui,sans-serif;
+ --hh:60px;--fh:70px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{font:500 19px/1.7 var(--ar);color:var(--ink);background:var(--paper);
+ background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible,[contenteditable=true]:focus-visible{outline:3px solid var(--bl);outline-offset:2px}
+code,.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;font-weight:700}
+[hidden]{display:none!important}
+.ic{width:1.15em;height:1.15em;flex:none;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 18px;border-radius:14px;border:2px solid var(--line);background:#fff;font-weight:800;font-size:1rem;transition:.15s;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--navy)}
+.btn.p{background:var(--navy);border-color:var(--navy);color:#fff}.btn.p:hover{background:var(--navy2)}
+.btn.sm{padding:5px 12px;font-size:.92rem;border-radius:11px}
+.btn.ico{padding:8px;width:42px;height:42px}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cw{display:inline;border:0;padding:0 7px;margin:0 1px;border-radius:8px;font-weight:800;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);border-bottom:2.5px dotted var(--c);line-height:1.5}
+.cw:hover{background:color-mix(in srgb,var(--c) 24%,transparent)}
+.ok{color:var(--gr)}.no{color:var(--rd)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;font-weight:800;font-size:.85rem;background:var(--c2,var(--gr2));color:var(--c,var(--gr))}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06)}100%{transform:none;opacity:1}}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+/* ===== header / footer ===== */
+.hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);z-index:60;display:flex;align-items:center;gap:16px;padding:0 18px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;white-space:nowrap;font-size:1rem}
+.brand i{width:36px;height:36px;border-radius:11px;background:var(--navy);color:#fff;display:grid;place-items:center;font:800 .9rem var(--mono);font-style:normal}
+.chap{display:flex;gap:6px;flex:1;justify-content:center}
+.chap button{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:86px;color:var(--mu);font-weight:800;font-size:.85rem}
+.chap button i{display:block;width:100%;height:5px;border-radius:4px;background:var(--grid)}
+.chap button.done i{background:color-mix(in srgb,var(--navy) 45%,#fff)}
+.chap button.on{color:var(--navy)}.chap button.on i{background:var(--navy)}
+.hico{width:40px;height:40px;border-radius:12px;border:2px solid var(--line);background:#fff;display:grid;place-items:center}
+.hico:hover{border-color:var(--navy)}
+.foot{position:fixed;bottom:0;left:0;right:0;height:var(--fh);z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 18px;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+.fnav{display:flex;align-items:center;gap:14px}
+.dots{display:flex;gap:6px;align-items:center}
+.dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:var(--line);transition:.2s}
+.dots button.on{width:28px;border-radius:6px;background:var(--navy)}
+.cntr{font:800 .9rem var(--mono);color:var(--mu);direction:ltr;min-width:52px;text-align:center}
+.fside{display:flex;gap:8px;min-width:200px}.fside.l{justify-content:flex-end}
+#nextBtn.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,99,235,.5)}70%{box-shadow:0 0 0 16px rgba(37,99,235,0)}100%{box-shadow:0 0 0 0 rgba(37,99,235,0)}}
+
+/* ===== slides ===== */
+.stage{position:fixed;top:var(--hh);bottom:var(--fh);left:0;right:0}
+.slide{position:absolute;inset:0;display:none;overflow:auto;padding:26px 30px}
+.slide.on{display:flex;flex-direction:column}
+.slide.on.fwd{animation:inF .45s cubic-bezier(.2,.8,.2,1)}.slide.on.back{animation:inB .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes inF{from{opacity:0;transform:translateX(-46px)}}@keyframes inB{from{opacity:0;transform:translateX(46px)}}
+.sl{width:100%;max-width:1160px;margin:auto;display:flex;flex-direction:column;gap:22px}
+.sl-h{text-align:center}.sl-h .badge{margin-bottom:6px}
+.sl-h h1{margin:0;font-size:2.3rem;line-height:1.25}
+.sl-h p{margin:6px 0 0;color:var(--mu);font-size:1.12rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:20px 24px}
+.full{padding:14px 16px}.full .sl{max-width:none;height:100%;margin:0;gap:12px}
+.arrow{color:var(--mu);display:grid;place-items:center}
+
+/* ===== characters ===== */
+.kid{display:block;height:auto}
+.float{animation:flt 3.2s ease-in-out infinite}.float.d2{animation-delay:-1.6s}
+@keyframes flt{50%{transform:translateY(-8px)}}
+.cast{display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,4vw,56px)}
+.who{display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800}
+.who b{font-size:1.2rem}
+.cover h1{font-size:3.4rem;margin:0}
+.cover .q{font-size:1.4rem;color:var(--mu);margin:2px 0 0}
+.hint1{display:inline-flex;align-items:center;gap:10px;background:var(--am2);border:1.5px solid #f3c25a;color:#7a5410;border-radius:14px;padding:8px 16px;font-weight:700}
+
+/* comic */
+.comic{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.panel{background:#fff;border:2.5px solid var(--ink);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:6px 6px 0 rgba(23,33,59,.12);animation:pop .5s both}
+.panel:nth-child(2){animation-delay:.15s}.panel:nth-child(3){animation-delay:.3s}
+.panel .art{height:220px;background:linear-gradient(180deg,#eef3ff,#fff);display:flex;align-items:flex-end;justify-content:center;gap:4px;position:relative;padding-top:10px}
+.panel .art.b{background:linear-gradient(180deg,#fff5e3,#fff)}.panel .art.c{background:linear-gradient(180deg,#f1ebff,#fff)}
+.panel p{margin:0;padding:12px 16px 16px;font-size:1.05rem;line-height:1.85;font-weight:600}
+.panel .pn{position:absolute;top:10px;right:12px;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:800 .85rem var(--mono)}
+.bubble{position:absolute;top:14px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:2px 14px;font-weight:800;font-size:.95rem;white-space:nowrap}
+.bubble::after{content:"";position:absolute;bottom:-8px;width:12px;height:12px;background:#fff;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+.bubble.toR{right:16%}.bubble.toR::after{right:26px}
+.qcard{align-self:center;margin-bottom:24px;background:#fff;border:2.5px solid var(--pu);border-radius:16px;padding:10px 18px;text-align:center}
+.qcard code{font-size:1.25rem;color:var(--pu)}
+.qcard .yn{display:flex;gap:8px;justify-content:center;margin-top:6px}
+.st{display:inline-flex;align-items:center;gap:6px;padding:2px 12px 2px 8px;border-radius:999px;font:800 .9rem var(--ar)}
+.st.y{background:var(--gr2);color:var(--gr)}.st.n{background:var(--rd2);color:var(--rd)}
+
+/* rules (left -> right) */
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.rule{direction:ltr;display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--line);border-radius:20px;padding:16px 20px;box-shadow:var(--sh);animation:pop .45s both}
+.rule .chk{display:flex;flex-direction:column;gap:6px;direction:rtl}
+.rule .who2{font-size:.95rem;color:var(--mu);font-weight:700;direction:rtl}
+.rule .res{margin-left:auto;padding:6px 18px;border-radius:14px;color:#fff;font:800 1.25rem var(--mono)}
+
+/* io */
+.io2{display:grid;grid-template-columns:1fr 60px 1fr;gap:12px;direction:ltr;align-items:stretch}
+.iobox{direction:rtl;display:flex;gap:14px;align-items:flex-start}
+.iobox .ib{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;flex:none}
+.iobox h3{margin:0;font-size:1.2rem}.iobox p{margin:2px 0 0;color:#3c4763}
+.exs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ex{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--sh)}
+.ex .r{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 18px;direction:ltr;font:800 1.4rem var(--mono)}
+.ex .r .o{color:var(--gr);text-align:right}
+.ex p{margin:0;padding:8px 18px;border-top:1px dashed var(--line);color:var(--mu);font-size:.98rem}
+
+/* analysis */
+.pipe{display:grid;grid-template-columns:1fr 50px 1.5fr 50px 1fr;gap:10px;align-items:stretch;direction:ltr}
+.pipe .card{text-align:center;padding:18px;direction:rtl}
+.pipe .card small{display:flex;justify-content:center;align-items:center;gap:6px;color:var(--mu);font-weight:800;margin-bottom:6px}
+.pipe .mid{border:2px solid var(--gr)}
+.qs{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.qs div{background:var(--pu2);border-radius:12px;padding:6px 10px;font-weight:700}
+.chipline{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.traps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.trap{background:#fff;border:2px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--sh);animation:pop .45s both}
+.trap .tic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;margin-bottom:10px}
+.trap h3{margin:0 0 4px;font-size:1.2rem}.trap p{margin:0;color:#3c4763;font-size:1rem}
+.trap code{background:#f1f4fa;padding:0 6px;border-radius:6px}
+.vars{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:start}
+.vrow{direction:ltr;display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 16px;margin-bottom:8px;animation:pop .4s both}
+.vrow .old{font:800 1.1rem var(--mono);color:var(--mu);width:28px;text-align:center}
+.vrow .new{font:800 1.12rem var(--mono)}
+.vrow small{margin-left:auto;color:var(--mu);font-weight:700;direction:rtl}
+.nametab h4{margin:0 0 8px;font-size:1.05rem;display:flex;gap:8px;align-items:center}
+.nrules{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.nr{display:flex;align-items:center;gap:8px;border-radius:10px;padding:4px 10px;font-size:.88rem;background:#f5f7fb}
+.nr code{font-size:.95rem}.nr small{color:var(--mu)}
+.nr.y{background:var(--gr2)}.nr.n{background:var(--rd2)}.nr.n code{text-decoration:line-through;text-decoration-color:var(--rd)}
+.nr .ic{width:16px;height:16px}
+
+/* pseudocode */
+.psd{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px 0;direction:ltr;font:700 1.15rem/1.85 var(--mono);max-width:900px;width:100%;margin:0 auto}
+.pr{display:grid;grid-template-columns:52px 1fr auto;align-items:center;border-left:5px solid var(--c);transition:opacity .35s,filter .35s,background .35s;padding-right:18px}
+.pr i{text-align:center;color:var(--mu);font-style:normal;font-weight:600}
+.pr span{white-space:pre}
+.pr em{direction:rtl;font:700 .95rem var(--ar);color:var(--mu);font-style:normal}
+.pr.hid{opacity:.12;filter:blur(3px)}
+.pr.cur{background:color-mix(in srgb,var(--c) 10%,#fff)}
+.pr k{color:#2563eb;font-weight:800}
+
+/* ===== flowchart (shared) ===== */
+.fc text{font-family:var(--ar);font-size:15.5px;fill:var(--ink);font-weight:800}
+.fc text.m{direction:ltr;unicode-bidi:plaintext}
+.fc text.m,.fc tspan.m{font-family:var(--mono);font-size:12.6px;font-weight:800}
+.fc .lbl{font-size:13px}.fc .lbl.y{fill:var(--gr)}.fc .lbl.n{fill:var(--rd)}
+.fc .nd .sh{fill:#fff;stroke:#9aa6bd;stroke-width:2.2;transition:.35s}
+.fc .nd[data-st=done] .sh{stroke:var(--k);fill:color-mix(in srgb,var(--k) 10%,#fff)}
+/* live */
+#fc .nd{transition:opacity .45s,filter .45s}
+#fc .nd[data-st=idle]{opacity:.3;filter:blur(1.4px)}
+#fc .nd[data-st=skip]{opacity:.13;filter:grayscale(1) blur(1px)}
+#fc .nd[data-st=cur] .sh{stroke:#f59e0b;fill:#fff6d1;stroke-width:3.6;filter:drop-shadow(0 0 9px rgba(245,158,11,.75))}
+#fc .ed{fill:none;stroke:#b9c3d6;stroke-width:2.2;marker-end:url(#ma);transition:opacity .4s,stroke .4s}
+#fc .ed[data-st=idle]{opacity:.35}#fc .ed[data-st=off]{opacity:.1}
+#fc .ed[data-st=on]{stroke:var(--navy);stroke-width:3.4;marker-end:url(#mb);stroke-dasharray:8 5;animation:flow .9s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-26}}
+/* build */
+#bfc .nd{opacity:0;transform:scale(.8);transform-box:fill-box;transform-origin:center;transition:opacity .5s,transform .5s cubic-bezier(.2,.9,.3,1.3)}
+#bfc .nd.in{opacity:1;transform:none}
+#bfc .lb{opacity:0;transition:opacity .5s .3s}#bfc .lb.in{opacity:1}
+#bfc .ed{fill:none;stroke:var(--navy);stroke-width:2.6;stroke-dasharray:1;stroke-dashoffset:1;opacity:0}
+#bfc .ed.in{opacity:1;animation:draw .7s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+#bfc .nd.hot .sh{stroke:#f59e0b;stroke-width:3.4;filter:drop-shadow(0 0 8px rgba(245,158,11,.7))}
+/* legend */
+.leg{position:absolute;top:10px;left:10px;z-index:4;direction:rtl}
+.legbtn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:3px 12px;font-weight:800;font-size:.82rem;color:var(--mu)}
+.legbtn:hover,.legbtn.on{border-color:var(--navy);color:var(--navy)}
+.legp{margin-top:6px;background:#fff;border:1.5px solid var(--line);border-radius:14px;box-shadow:var(--sh);padding:10px 12px;display:flex;flex-direction:column;gap:6px;animation:pop .25s both;min-width:210px}
+.legp div{display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:700;line-height:1.3}
+.legp svg{width:46px;height:26px;flex:none;direction:ltr}
+.legp svg *{fill:#fff;stroke:var(--k);stroke-width:2.2}
+.legp small{color:var(--mu);font-weight:600}
+
+/* build slide */
+.build{display:grid;grid-template-columns:minmax(280px,.75fr) minmax(0,1.25fr);gap:22px;direction:ltr;align-items:stretch;flex:1;min-height:0}
+.ideas{direction:rtl;display:flex;flex-direction:column;gap:8px}
+.ideas .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ideas h3{margin:0;font-size:1.1rem;display:flex;gap:8px;align-items:center}
+.idea{cursor:pointer;display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:8px 14px;font-weight:700;font-size:1rem;text-align:start;box-shadow:var(--sh);transition:.2s}
+.idea:hover{border-color:var(--navy);transform:translateX(4px)}
+.idea .sg{width:38px;height:24px;flex:none}
+.idea .sg *{fill:none;stroke:var(--k);stroke-width:2.4}
+.idea .num{margin-inline-start:auto;font:800 .8rem var(--mono);color:var(--gr)}
+.idea.used{opacity:.42;border-style:dashed;box-shadow:none;cursor:default;transform:none}
+.idea.glow{border-color:var(--gr);box-shadow:0 0 0 5px var(--gr2)}
+.idea.shake{animation:shake .45s}
+.lprog{height:8px;border-radius:6px;background:var(--grid);overflow:hidden}.lprog i{display:block;height:100%;width:0;background:var(--gr);transition:width .5s}
+.fcbox{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px;min-height:0;display:flex;justify-content:center}
+#bfc{height:100%;width:auto;max-width:100%;max-height:calc(100vh - var(--hh) - var(--fh) - 210px)}
+.bdone{direction:rtl;border:2px solid var(--gr);background:var(--gr2);border-radius:14px;padding:10px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;font-weight:800;animation:pop .4s both}
+
+/* ===== IDE slide ===== */
+.runbar{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:9px 14px;display:flex;flex-direction:column;gap:6px;flex:none}
+.crow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select{border:2px solid var(--line);border-radius:12px;padding:6px 10px;background:#fff;font:700 .95rem var(--ar)}
+.say{font-size:1.12rem;line-height:1.9;min-height:2.1em;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.say code{background:#f1f4fa;border-radius:7px;padding:0 7px;font-size:1rem}
+.nt{display:inline-flex;align-items:center;gap:5px;padding:1px 11px;border-radius:999px;font-size:.85rem;font-weight:800;color:#fff;background:var(--c,var(--navy))}
+.cmp{display:inline-flex;align-items:center;gap:5px;padding:0 10px;border-radius:9px;border:2px solid;font:800 .95rem var(--mono);direction:ltr;animation:pop .45s both}
+.cmp.t{color:var(--gr);border-color:var(--gr);background:var(--gr2)}.cmp.f{color:var(--rd);border-color:var(--rd);background:var(--rd2)}
+.prog{height:6px;border-radius:5px;background:var(--grid);overflow:hidden}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--bl));transition:width .4s}
+.cnt{font:800 .95rem var(--mono);color:var(--mu);min-width:56px;text-align:center;direction:ltr}
+.idegrid{flex:1;min-height:0;display:grid;direction:ltr;grid-template-columns:minmax(0,1.32fr) minmax(250px,.7fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) 196px;gap:12px}
+.g-code{grid-column:1;grid-row:1}.g-in{grid-column:1;grid-row:2}.g-flow{grid-column:2;grid-row:1/3}.g-mem{grid-column:3;grid-row:1}.g-out{grid-column:3;grid-row:2}
+.pane{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);display:flex;flex-direction:column;min-height:0;overflow:hidden;position:relative}
+.ph{direction:rtl;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 14px;border-bottom:1px solid var(--line);font-weight:800;color:var(--mu);font-size:.95rem;flex:none}
+.ph span{display:flex;align-items:center;gap:8px}
+.ph .tagk{font:800 .7rem var(--mono);letter-spacing:1px;color:var(--mu);background:#f1f4fa;border-radius:6px;padding:1px 8px}
+.pb{flex:1;min-height:0;overflow:auto;padding:12px;direction:rtl}
+.idebar{display:flex;gap:6px;align-items:center;padding:6px 12px;background:#252526;direction:ltr;border-bottom:1px solid #333;flex:none}
+.idebar i{width:11px;height:11px;border-radius:50%}
+.idebar span{margin-left:10px;padding:2px 12px;background:#1e1e1e;color:#cfd3da;font:600 .82rem var(--mono);border-radius:6px 6px 0 0}
+.ide{flex:1;min-height:0;overflow:auto;background:#1e1e1e;color:#d4d4d4;direction:ltr;padding:10px 0;font:600 17.5px/1.9 var(--mono);position:relative}
+.ln{display:flex;white-space:pre;transition:background .3s}
+.ln .no{width:48px;text-align:right;padding-right:16px;color:#6e7681;flex:none;user-select:none;font-weight:500}
+.ln .tx{position:relative;transition:opacity .35s,filter .35s;padding-right:12px}
+.ln[data-st=ghost] .tx{opacity:.13;filter:blur(3px)}
+.ln[data-st=cur]{background:rgba(255,224,102,.15);box-shadow:inset 4px 0 0 #ffe066}
+.ln[data-st=cur] .no{color:#ffe066}
+.ln[data-st=skip] .tx{opacity:.33;text-decoration:line-through;text-decoration-color:#e06c75;text-decoration-thickness:2px}
+.ln.typing .tx{animation:typein .85s steps(30,end) both}
+@keyframes typein{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.t-ctl{color:#C586C0}.t-kw{color:#569CD6}.t-fn{color:#DCDCAA}.t-str{color:#CE9178}.t-num{color:#B5CEA8}.t-com{color:#6A9955;font-style:italic}.t-var{color:#9CDCFE}.t-op{color:#D4D4D4}
+/* input zone */
+.inzone{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:10px;justify-content:center;direction:rtl}
+.inrow{display:flex;gap:10px;align-items:center;direction:ltr}
+#inp{flex:1;min-width:0;padding:10px 14px;border:2.5px solid var(--am);border-radius:14px;font:800 1.35rem var(--mono);direction:ltr;background:var(--am2);color:#7a4a00}
+#inp.bad{border-color:var(--rd);background:var(--rd2)}
+.exrow{display:flex;gap:6px;flex-wrap:wrap;direction:ltr}
+.exb{border:1px dashed var(--line);background:#fbfcfe;border-radius:10px;padding:2px 10px;font:700 .85rem var(--mono)}
+.exb:hover{border-color:var(--navy)}
+/* flow pane */
+.flowpane{flex:1;min-height:0;display:flex;justify-content:center;align-items:flex-start;padding:40px 8px 8px;overflow:auto}
+#fc{height:100%;width:auto;max-width:100%}
+/* output */
+.term{flex:1;min-height:0;overflow:auto;background:#0f172a;color:#e2e8f0;font:700 17px/1.7 var(--mono);direction:ltr;padding:10px 16px}
+.term .pp{color:#7dd3fc}.term .pp::before{content:"\276F  ";color:#4ade80}
+.term .out{color:#4ade80;font-size:1.6rem;font-weight:800}.term .out.new{animation:pop .5s both}
+.term .fin{color:#94a3b8;font-size:.85rem}
+.caret{animation:blink 1s steps(1) infinite;color:#94a3b8}@keyframes blink{50%{opacity:0}}
+/* memory */
+.vcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:14px 10px;margin:6px 0 12px}
+.vcard{--c:#888;border:2.5px solid var(--c);border-radius:14px;background:#fff;text-align:center;padding:16px 6px 8px;position:relative;transition:.3s}
+.vcard::before{content:"";position:absolute;top:-2.5px;left:18%;right:18%;height:8px;border:2.5px solid var(--c);border-top:0;border-radius:0 0 9px 9px;background:#fff}
+.vcard small{display:block;color:var(--mu);font-size:.78rem;font-weight:700;line-height:1.3}
+.vcard code{color:var(--c);font-size:.84rem}
+.vcard b{display:block;font:800 1.45rem/1.3 var(--mono);direction:ltr;word-break:break-all;min-height:2rem;margin-top:2px}
+.vcard b.long{font-size:.84rem;line-height:1.35}
+.vcard b.T{color:var(--gr)}.vcard b.F{color:var(--rd)}
+.vcard em{position:absolute;top:4px;left:8px;font:700 .6rem var(--mono);color:var(--mu);font-style:normal}
+.vcard.empty{opacity:.42;border-style:dashed}.vcard.empty::before{border-style:dashed}
+.vcard.fresh{animation:pop .6s both;box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 22%,transparent)}
+.vcard.read{box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 30%,transparent)}
+.mxh{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--mu);font-weight:800;margin-bottom:6px}
+.mx{direction:ltr;border:1px solid var(--line);border-radius:12px;padding:8px;background:#fbfcfe}
+.mrow{display:grid;grid-template-columns:52px repeat(8,minmax(0,1fr)) 70px;gap:4px;align-items:center;padding:3px 4px;border-radius:9px;border:1.5px solid transparent;margin-bottom:3px}
+.mrow.used{border-color:#e3e8f1;background:#fff}
+.mrow .ad{font:700 .66rem var(--mono);color:var(--mu)}
+.mrow .tg{font:800 .66rem var(--mono);text-align:left;line-height:1.25;overflow:hidden;text-overflow:ellipsis}
+.byte{display:flex;gap:2px;padding:2.5px;border:1px solid #dfe5ef;border-radius:5px;background:#fff;transition:background .3s,border-color .3s}
+.nib{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;flex:1}
+.bit{aspect-ratio:1;border-radius:1.5px;background:#eceff5}
+.byte.used{border-color:var(--vc);background:color-mix(in srgb,var(--vc) 9%,#fff)}
+.byte.used .bit{background:color-mix(in srgb,var(--vc) 20%,#fff)}
+.byte.used .bit.one{background:var(--vc)}
+.byte.wave{animation:wave .7s both}
+@keyframes wave{40%{transform:scale(1.22);box-shadow:0 0 0 5px color-mix(in srgb,var(--vc) 35%,transparent)}100%{transform:none}}
+.legend{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;font-size:.76rem;color:var(--mu);margin-top:8px}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{display:inline-block;border:1px solid #9aa6bd;border-radius:3px}
+.namebtn{display:inline-flex;align-items:center;gap:5px;border:2px solid var(--ink);background:#fff;border-radius:10px;padding:0 10px;font:800 .78rem var(--ar)}
+.namepop{position:absolute;z-index:6;left:10px;right:10px;top:44px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:12px;box-shadow:var(--sh);animation:pop .3s;direction:rtl}
+
+/* ===== beams (data-journey arrows) ===== */
+#beams{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:640;overflow:visible}
+#beams path.bm{fill:none;stroke-width:3.2;stroke-linecap:round;filter:drop-shadow(0 2px 4px rgba(23,33,59,.18))}
+#beams path.bm.fade{transition:opacity .6s;opacity:.28}
+.pkt{direction:ltr;unicode-bidi:isolate;position:fixed;z-index:660;pointer-events:none;left:0;top:0;padding:3px 12px;border-radius:999px;color:#fff;font:800 .95rem var(--mono);white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.22);transform:translate(-50%,-50%)}
+.pkt.dot{width:16px;height:16px;padding:0}
+
+/* ===== test (live simulation) ===== */
+.tbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.seg{display:inline-flex;border:2px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:6px 16px;font-weight:800}
+.seg button.on{background:var(--navy);color:#fff}
+#tIn{padding:7px 12px;border:2px solid var(--line);border-radius:12px;font:700 1.05rem var(--mono);width:210px;direction:ltr}
+.cases{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;direction:ltr}
+.case{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:2px 10px;font:700 .82rem var(--mono);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.case.on{border-color:var(--am);background:var(--am2)}
+.case.p{border-color:#a7e5bd;color:var(--gr)}.case.f{border-color:#f5a3b5;color:var(--rd)}
+.sim{display:grid;direction:ltr;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) minmax(0,1fr);gap:72px;align-items:center}
+.sbox{background:#fff;border:2px solid var(--line);border-radius:20px;box-shadow:var(--sh);overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.sbox.hot{border-color:var(--c);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 18%,transparent),var(--sh)}
+.sbox .ph{padding:6px 12px}
+.sbig{padding:18px 16px;text-align:center;font:800 1.5rem var(--mono);direction:ltr;min-height:86px;display:grid;place-items:center;word-break:break-all}
+#sIn .sbig{color:#7a4a00;background:var(--am2)}
+#sOut .sbig{color:var(--gr)}
+.verd{display:flex;justify-content:center;padding:0 12px 12px;min-height:40px}
+.mcode{background:#1e1e1e;font:600 12.6px/1.75 var(--mono);direction:ltr;padding:8px 0;color:#d4d4d4}
+.mcode div{white-space:pre;padding:0 10px;transition:background .15s,opacity .2s}
+.mcode div.cur{background:rgba(255,224,102,.22);box-shadow:inset 3px 0 0 #ffe066}
+.mcode div.skip{opacity:.28;text-decoration:line-through}
+.mmem{display:flex;gap:6px;flex-wrap:wrap;padding:10px;direction:ltr;justify-content:center}
+.mchip{border:2px solid var(--c);border-radius:10px;padding:1px 8px;font:800 .78rem var(--mono);color:var(--c);opacity:.3;transition:.3s;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mchip b{color:var(--ink);margin-left:4px}
+.mchip.on{opacity:1;background:color-mix(in srgb,var(--c) 8%,#fff)}
+.tt{max-width:960px;width:100%;margin:0 auto}
+.thead,.trow{display:grid;grid-template-columns:2.3fr 1fr 1fr 48px auto;gap:10px;align-items:center}
+.thead{padding:0 16px 4px;color:var(--mu);font-weight:800;font-size:.82rem}
+.trow{background:#fff;border:2px solid var(--line);border-radius:14px;padding:5px 14px;margin-bottom:6px;animation:pop .35s both}
+.trow.ok{border-color:#a7e5bd}.trow.bad{border-color:#f5a3b5;background:#fff8fa}
+.trow .i{font:700 .9rem var(--mono);direction:ltr;text-align:left;overflow:auto;white-space:nowrap}
+.trow .o{font:800 .95rem var(--mono);direction:ltr}
+.vchip{display:inline-flex;align-items:center;gap:6px;padding:2px 12px;border-radius:999px;font-weight:800;font-size:.9rem;color:#fff}
+.score{text-align:center;font-size:1.15rem;font-weight:800;min-height:1.5em}
+
+/* improve */
+.pre{background:#1e1e1e;color:#d4d4d4;border-radius:16px;padding:14px 18px;font:600 1.08rem/1.9 var(--mono);direction:ltr;text-align:left;overflow:auto;white-space:pre;margin:0}
+.bug{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:center}
+.bugexp{display:flex;flex-direction:column;gap:12px}
+.fm{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:8px 14px;background:#fff;font-weight:700}
+.fm.hit{border-color:var(--rd);background:var(--rd2)}.fm.never{opacity:.4;border-style:dashed}
+.rulebox{border-inline-start:5px solid var(--gr);background:var(--gr2);border-radius:12px;padding:10px 16px;font-weight:700}
+.atabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.atabs button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:6px 16px;font-weight:800}
+.atabs button.on{border-color:var(--navy);background:var(--navy);color:#fff}
+.altv{max-width:880px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:12px;animation:pop .35s both}
+.altv .why{display:flex;gap:10px;align-items:center;font-weight:700;font-size:1.08rem}
+.chip{display:inline-block;padding:1px 12px;border-radius:999px;border:1.5px solid var(--navy);color:var(--navy);font:700 .82rem var(--mono);direction:ltr}
+.trail{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;direction:ltr}
+.trail span{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:var(--gr2);color:var(--gr);font-weight:800;animation:pop .4s both}
+.cta{display:flex;flex-direction:column;align-items:center;gap:14px;background:var(--navy);color:#fff;border-radius:26px;padding:26px;text-align:center;box-shadow:var(--sh)}
+.cta h2{margin:0;font-size:1.6rem}.cta p{margin:0;opacity:.85}
+.cta .btn{background:#fff;color:var(--navy);border-color:#fff}
+
+/* concept sheet */
+.shbg{position:fixed;inset:0;z-index:300;background:rgba(15,23,42,.35);backdrop-filter:blur(3px)}
+.sheet{position:fixed;z-index:310;top:0;left:50%;transform:translateX(-50%);width:min(1060px,96vw);max-height:86vh;background:#fff;border-radius:0 0 26px 26px;box-shadow:0 30px 70px rgba(0,0,0,.3);display:flex;flex-direction:column;animation:drop .4s cubic-bezier(.2,.9,.3,1)}
+@keyframes drop{from{transform:translate(-50%,-100%)}}
+.shtabs{display:flex;gap:6px;overflow-x:auto;padding:12px 60px 8px 16px;border-bottom:1px solid var(--line)}
+.shtabs button{flex:none;border:2px solid var(--line);background:#fff;border-radius:999px;padding:2px 14px;font-weight:800;font-size:.88rem;color:var(--mu)}
+.shtabs button.on{border-color:var(--c);color:var(--c);background:color-mix(in srgb,var(--c) 9%,#fff)}
+.shbody{padding:16px 24px 24px;overflow:auto}
+.shbody h2{margin:0;font-size:1.6rem}.shbody .sub{color:var(--mu);margin:0 0 16px}
+.shx{position:absolute;top:10px;left:12px;width:38px;height:38px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center}
+.shx:hover{border-color:var(--rd);color:var(--rd)}
+.frames{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;justify-content:center;direction:ltr}
+.fr{flex:1 1 230px;max-width:330px;border:2px solid var(--line);border-radius:18px;background:#fbfcfe;padding:14px;display:flex;flex-direction:column;gap:10px;animation:pop .5s both}
+.fr .fv{min-height:120px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;direction:ltr}
+.fr p{margin:0;text-align:center;font-weight:700;font-size:1rem;line-height:1.7;direction:rtl}
+.fa{align-self:center;color:var(--mu)}
+.vb{--c:#888;display:inline-flex;flex-direction:column;align-items:center}
+.vb-b{min-width:70px;padding:6px 12px;border:3px solid var(--c);border-radius:12px;background:#fff;font:800 1.5rem var(--mono);text-align:center;position:relative}
+.vb-b::before{content:"";position:absolute;top:-3px;left:20%;right:20%;height:7px;border:3px solid var(--c);border-top:0;border-radius:0 0 8px 8px;background:#fff}
+.vb-n{font:800 .9rem var(--mono);color:var(--c);margin-top:3px}
+.vb em{font:700 .7rem var(--mono);color:var(--mu);font-style:normal}
+.nl{display:flex;gap:4px;align-items:center;border-top:3px solid var(--ink);padding-top:6px}
+.nl span{width:34px;text-align:center;font:800 1.1rem var(--mono);border-radius:8px;padding:2px 0}
+.nl .p{background:var(--gr2);color:var(--gr)}.nl .n{color:var(--rd);text-decoration:line-through}.nl .z{color:var(--mu);text-decoration:line-through}
+.r2{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.strc{font:800 1.3rem var(--mono);color:#b45309;background:var(--am2);padding:4px 12px;border-radius:10px}
+.arw{font:800 .95rem var(--mono);color:var(--mu)}
+.okc,.noc{font:800 1.3rem var(--mono);padding:2px 12px;border-radius:10px}
+.okc{background:var(--gr2);color:var(--gr)}.noc{background:var(--rd2);color:var(--rd);text-decoration:line-through}
+.ribbon{font:800 1.5rem var(--mono);background:var(--am2);border:2px dashed var(--am);border-radius:12px;padding:6px 16px;letter-spacing:3px}
+.lcells{display:flex;gap:4px}.lcells span{font:800 1.1rem var(--mono);border:2px solid var(--am);border-radius:8px;padding:2px 10px;background:#fff;color:#b45309}
+.bags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.bag,.left{display:flex;gap:3px;padding:6px;border-radius:12px;border:2px solid var(--pu);background:var(--pu2)}
+.left{border-color:var(--rd);background:var(--rd2);border-style:dashed}
+.bag i,.left i{width:14px;height:14px;border-radius:50%;background:var(--pu);display:block}.left i{background:var(--rd)}
+.cd{font:700 1.15rem/1.9 var(--mono);background:#1e1e1e;color:#d4d4d4;border-radius:12px;padding:8px 16px;text-align:left}
+.cd b{color:#B5CEA8}.cd .T{color:#4ade80}.cd .F{color:#f87171}
+.lamp{display:flex;flex-direction:column;align-items:center;font:800 .9rem var(--mono)}
+.lamp i{width:40px;height:40px;border-radius:50%;background:#e5e7eb;border:3px solid #9ca3af;display:block}
+.lamp.on i{background:#fde047;border-color:#eab308;box-shadow:0 0 16px #fde047}.lamp.big i{width:58px;height:58px}
+.tts{border-collapse:collapse;font:700 .95rem var(--mono)}.tts td{border:1px solid var(--line);padding:2px 10px;text-align:center}.tts .T{color:var(--gr)}.tts .F{color:var(--rd)}
+.lad{display:flex;flex-direction:column;align-items:flex-start;gap:2px;font:800 .82rem var(--mono)}
+.lad .q{border:2px solid var(--bl);border-radius:8px;padding:2px 8px;background:var(--bl2)}
+.lad .q b{color:var(--gr)}.lad .dn{color:var(--rd);padding-left:14px}.lad .e{border-color:var(--pk);background:var(--pk2)}
+.screen{border:4px solid var(--ink);border-radius:10px;background:#0f172a;color:#4ade80;font:800 1.5rem var(--mono);padding:10px 20px}
+.bits64{display:grid;grid-template-columns:repeat(8,auto);gap:3px}
+.bits64 span{display:flex;gap:1px;padding:2px;border:1px solid var(--rd);border-radius:4px}
+.bits64 i{width:5px;height:9px;background:var(--rd2);display:block;border-radius:1px}
+.bitrow{display:flex;gap:3px}.bitrow i{width:22px;height:28px;border-radius:5px;border:2px solid var(--cy);font:800 .9rem/24px var(--mono);text-align:center;font-style:normal;color:var(--cy)}
+.bitrow i.one{background:var(--cy);color:#fff}
+.sw{padding:4px 16px;border-radius:999px;font:800 1rem var(--mono);border:3px solid}
+.sw.on{border-color:var(--gr);background:var(--gr2);color:var(--gr)}.sw.off{border-color:var(--rd);background:var(--rd2);color:var(--rd)}
+.sqs{display:flex;gap:6px}.sqs i{width:40px;height:40px;border:3px solid var(--pu);border-radius:10px;display:grid;place-items:center;font:800 1rem var(--mono);font-style:normal;color:var(--pu);animation:lit 3s infinite}
+.sqs i:nth-child(2){animation-delay:1s}.sqs i:nth-child(3){animation-delay:2s}
+@keyframes lit{0%,30%{background:var(--pu);color:#fff}34%,100%{background:#fff}}
+.fbox{border:3px solid var(--bl);border-radius:14px;padding:8px 14px;background:var(--bl2);font:800 1rem var(--mono);text-align:center}
+.fbox small{display:block;font-size:.75rem;color:var(--mu)}
+.lst{display:flex;flex-direction:column;align-items:center}
+.lst .c{display:flex}.lst .c b{font:800 1.2rem var(--mono);width:52px;height:46px;display:grid;place-items:center;border:3px solid var(--gr);margin-left:-3px;background:#fff}
+.lst .x{display:flex}.lst .x i{width:52px;text-align:center;font:700 .85rem var(--mono);color:var(--mu);font-style:normal}
+
+/* next problem popup */
+.hintp{position:fixed;left:18px;bottom:calc(var(--fh) + 12px);z-index:320;width:min(540px,calc(100vw - 36px));max-height:calc(100vh - var(--fh) - var(--hh) - 30px);overflow:auto;background:#fff;border:2px solid var(--navy);border-radius:24px;box-shadow:0 26px 60px rgba(0,0,0,.28);padding:22px 22px 20px;animation:rise .4s cubic-bezier(.2,.9,.3,1)}
+@keyframes rise{from{transform:translateY(40px);opacity:0}}
+.hintp h2{margin:4px 0 4px;font-size:1.45rem}.hintp p{margin:0;color:#3c4763}
+.puz{display:flex;gap:8px;align-items:center;justify-content:center;direction:ltr;margin:16px 0 8px;flex-wrap:wrap}
+.puz b{font:800 1.6rem var(--mono);width:46px;height:52px;display:grid;place-items:center;background:var(--bl2);border-radius:12px;border:2px solid var(--bl)}
+.puz i{width:46px;height:52px;border:3px dashed var(--am);border-radius:12px;display:grid;place-items:center;font:800 1.5rem var(--mono);font-style:normal;color:var(--am);animation:cyc 3s infinite}
+.puz i:nth-of-type(2){animation-delay:-1.5s}
+@keyframes cyc{0%,30%{background:var(--am2)}50%{background:#fff}}
+.puz .eq{font:800 1.6rem var(--mono)}
+.ops{display:flex;justify-content:center;gap:8px;margin-bottom:12px;direction:ltr}
+.ops span{font:800 1.3rem var(--mono);width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:var(--am);color:#fff;animation:pop .5s both}
+.hl{list-style:none;padding:0;margin:0 0 14px}
+.hl li{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border-radius:12px;background:#f5f7fb;margin-bottom:6px;font-size:1rem}
+.hl li>b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:.8rem;margin-top:2px}
+.search{display:flex;align-items:center;gap:10px;border:2px solid var(--bl);border-radius:999px;padding:6px 16px;font:800 1.1rem var(--mono);direction:ltr;background:var(--bl2);margin-bottom:14px;color:var(--bl)}
+.search small{font:600 .85rem var(--ar);color:var(--mu);margin-left:auto}
+
+/* whiteboard */
+.wbw{position:fixed;z-index:250;width:min(980px,96vw);background:#fff;border-radius:18px;box-shadow:0 26px 70px rgba(0,0,0,.35);border:1px solid var(--line);overflow:hidden;left:2vw;top:76px}
+.wbh{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:var(--navy);color:#fff;cursor:move;user-select:none;touch-action:none}
+.wbh b{display:flex;gap:8px;align-items:center}
+.wbh button{width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;display:grid;place-items:center}
+.wbt{display:flex;gap:5px;flex-wrap:wrap;align-items:center;padding:7px 10px;background:#f1f4fa;border-bottom:1px solid var(--line)}
+.wbt button{display:inline-flex;align-items:center;gap:5px;border:1.5px solid #c3cbdb;background:#fff;border-radius:9px;padding:2px 10px;font-size:.86rem;font-weight:800}
+.wbt button:hover{border-color:var(--navy)}
+.wbt .swc{width:24px;height:24px;padding:0;border-radius:50%}
+.wbt hr{width:1px;height:24px;border:0;background:#c3cbdb;margin:0 4px}
+.wbs{position:relative;width:100%;aspect-ratio:1000/560;background:#fff;background-image:radial-gradient(#dfe5ef 1.2px,transparent 1.3px);background-size:22px 22px;overflow:hidden;direction:ltr}
+.wbfoot{padding:5px 12px;font-size:.82rem;color:var(--mu);background:#f8fafc}
+.wsh{position:absolute;cursor:grab;touch-action:none;user-select:none;--sc:#1d2a56;transform-origin:top left;transform:scale(var(--s,1))}
+.wsh.sel{outline:2px dashed var(--bl);outline-offset:5px}
+.ed{outline:0;min-width:20px;display:inline-block;unicode-bidi:plaintext}
+.ed[contenteditable=true]{background:#eef3ff;outline:1.5px dashed var(--bl);cursor:text;user-select:text}
+.w-var{display:flex;flex-direction:column;align-items:center}
+.w-box{min-width:90px;height:66px;border:3px solid var(--sc);border-radius:12px;display:grid;place-items:center;position:relative;padding:0 10px;background:#fff}
+.w-box::before{content:"";position:absolute;top:-3px;left:18%;right:18%;height:9px;border:3px solid var(--sc);border-top:0;border-radius:0 0 9px 9px;background:#fff}
+.w-box .ed{font:800 1.5rem var(--mono)}
+.w-var .nm{font:800 1rem var(--mono);color:var(--sc);margin-top:4px}
+.w-cond{position:relative;width:240px;height:150px}
+.w-cond svg.dia{position:absolute;left:0;top:0;width:200px;height:110px}
+.w-cond polygon,.w-arr path,.w-loop path,.w-cond path{fill:none;stroke:var(--sc);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.w-cond .q{position:absolute;left:30px;top:40px;width:140px;text-align:center;font:800 1rem var(--ar)}
+.w-cond .y{position:absolute;left:198px;top:30px;font:800 .85rem var(--ar);color:var(--gr);display:flex;flex-direction:column;align-items:flex-start}
+.w-cond .y svg{width:34px;height:16px}
+.w-cond .n{position:absolute;left:84px;top:108px;font:800 .85rem var(--ar);color:var(--rd);display:flex;align-items:center;gap:4px}
+.w-cond .n svg{width:16px;height:34px}
+.w-cond .y path{stroke:var(--gr)}.w-cond .n path{stroke:var(--rd)}
+.w-loop{display:flex;flex-direction:column;align-items:center;padding:4px}
+.w-loop svg{width:200px;height:40px}
+.w-loop .sq{display:flex;gap:6px}.w-loop .sq i{width:46px;height:46px;border:3px solid var(--sc);border-radius:10px;display:grid;place-items:center;font:800 1rem var(--mono);font-style:normal;color:var(--sc)}
+.w-loop .ed{margin-top:4px;font:800 .95rem var(--ar)}
+.w-func{width:300px;border:3.5px solid var(--sc);border-radius:16px;background:#fff;position:relative}
+.w-func .fh{background:var(--sc);color:#fff;padding:4px 12px;border-radius:11px 11px 0 0;font:800 .95rem var(--mono)}
+.w-func .fb{min-height:90px;padding:10px 14px;font:700 .95rem var(--ar);color:#475569}
+.w-func .fi,.w-func .fo{position:absolute;top:56px;font:800 .8rem var(--ar);color:var(--sc);white-space:nowrap}
+.w-func .fi{right:100%;margin-right:6px}.w-func .fo{left:100%;margin-left:6px}
+.w-list{display:flex;flex-direction:column;align-items:center}
+.w-list .cells{display:flex}.w-list .cells b{width:54px;height:50px;border:3px solid var(--sc);margin-left:-3px;display:grid;place-items:center;font:800 1.15rem var(--mono);background:#fff}
+.w-list .ix{display:flex}.w-list .ix i{width:54px;text-align:center;font:700 .8rem var(--mono);color:#64748b;font-style:normal;margin-left:-3px}
+.w-list .nm{font:800 .95rem var(--mono);color:var(--sc)}
+.w-io,.w-proc,.w-term{min-width:150px;height:58px;display:grid;place-items:center;padding:0 26px;font:800 1rem var(--ar);position:relative;isolation:isolate}
+.w-io::before{content:"";position:absolute;inset:0;border:3px solid var(--sc);transform:skewX(-16deg);border-radius:4px;background:#fff;z-index:-1}
+.w-proc{border:3px solid var(--sc);background:#fff}
+.w-term{border:3px solid var(--sc);border-radius:30px;background:#fff}
+.w-note{width:170px;min-height:110px;background:#fff7b8;box-shadow:0 6px 14px rgba(0,0,0,.12);padding:12px;font:700 1rem var(--ar);transform:rotate(-2deg);border-top:16px solid #fde68a}
+.w-txt{font:800 1.3rem var(--ar);color:var(--sc)}
+.w-arr{width:110px;height:26px;display:block}
+
+.toast{position:fixed;top:calc(var(--hh) + 14px);left:50%;transform:translateX(-50%);z-index:800;max-width:min(640px,92vw);background:var(--ink);color:#fff;border-radius:16px;padding:10px 18px;font-weight:700;box-shadow:0 14px 30px rgba(0,0,0,.3);animation:pop .35s;display:flex;gap:10px;align-items:center}
+
+@media (max-width:1100px){
+ .comic,.traps{grid-template-columns:1fr}.panel .art{height:180px}
+ .rules,.exs,.vars,.bug{grid-template-columns:1fr}
+ .io2,.pipe{grid-template-columns:1fr}.io2 .arrow,.pipe .arrow{transform:rotate(90deg)}
+ .build{grid-template-columns:1fr}
+ .idegrid{grid-template-columns:1fr 1fr;grid-template-rows:440px 190px 600px;flex:none}
+ .g-code{grid-column:1/-1;grid-row:1}.g-in{grid-column:1;grid-row:2}.g-out{grid-column:2;grid-row:2}.g-mem{grid-column:1;grid-row:3}.g-flow{grid-column:2;grid-row:3}
+ .full .sl{height:auto}
+ .sim{grid-template-columns:1fr;gap:40px}
+ .chap button{min-width:0}.chap button span{display:none}.brand b{display:none}
+ .fside{min-width:0}.fside .lbl{display:none}
+ .thead,.trow{grid-template-columns:1.6fr 1fr 1fr 40px}.trow .btn{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}}
+
+/* ===== v4: flowchart | code | memory ===== */
+.idegrid{grid-template-columns:minmax(0,1.1fr) minmax(0,1.3fr) minmax(0,.95fr);grid-template-rows:auto minmax(0,1fr) 150px}
+.g-flow{grid-column:1;grid-row:1/4}.g-in{grid-column:2;grid-row:1}.g-code{grid-column:2;grid-row:2}.g-out{grid-column:2;grid-row:3}.g-mem{grid-column:3;grid-row:1/4}
+.inzone{padding:10px 12px;gap:8px}
+#inp{font-size:1.3rem;padding:7px 12px}
+.flowpane{display:block;flex:1;min-height:0;padding:12px;overflow:auto;text-align:center;direction:ltr}
+.flowpane svg{display:inline-block}
+#legSlot .leg{top:auto;bottom:10px;left:10px;display:flex;flex-direction:column-reverse;align-items:flex-start}
+#legSlot .legp{margin:0 0 6px}
+#flowPane #fc{height:auto;max-width:none}
+.flowpane{padding-bottom:52px}
+.zbar{display:flex;gap:4px;direction:ltr}
+.zb{border:1.5px solid var(--line);background:#fff;border-radius:8px;min-width:32px;height:28px;font:800 .85rem var(--mono);color:var(--ink)}
+.zb:hover{border-color:var(--navy)}
+#fc text{font-size:16px}#fc text.m,#fc tspan.m{font-size:14.5px}#fc tspan.ar{font-family:var(--ar);font-size:16px}
+#fc text.lbl{font-size:14px}
+.fc .sh2{fill:none;stroke:var(--k);stroke-width:2}
+#fc .ed[data-st=show]{stroke:#64748b;opacity:1;marker-end:url(#mb)}
+.say{font-size:1.2rem}
+.ide{font-size:17px}
+.ln[data-st=err]{background:rgba(225,29,72,.25);box-shadow:inset 4px 0 0 #e11d48}
+.term .errl{color:#f87171;font-size:1rem;font-weight:700}
+.term .out{font-size:1.5rem}
+.edwrap{position:relative;flex:1;min-height:0;background:#1e1e1e;overflow:hidden}
+.edgut{position:absolute;left:0;top:0;bottom:0;width:52px;overflow:hidden;background:#1e1e1e;z-index:2;border-right:1px solid #2d2d2d}
+#edGut{font:500 17px/1.9 var(--mono);color:#6e7681;text-align:right;padding:10px 12px 10px 0;direction:ltr}
+#edHL,#edTA{position:absolute;inset:0;margin:0;border:0;padding:10px 14px 30px 64px;font:600 17px/1.9 var(--mono);white-space:pre;overflow:auto;direction:ltr;text-align:left;tab-size:4;letter-spacing:0}
+#edHL{color:#d4d4d4;pointer-events:none;overflow:hidden}
+#edTA{background:transparent;color:transparent;caret-color:#ffe066;resize:none;outline:0;z-index:1;-webkit-text-fill-color:transparent}
+#edTA::selection{background:rgba(56,139,253,.35)}
+.edhint{position:absolute;bottom:6px;right:12px;z-index:3;font:700 .78rem var(--ar);color:#8b949e;direction:rtl;pointer-events:none}
+.idebar select{margin-left:auto;background:#2d2d2d;color:#e5e7eb;border:1px solid #3c3c3c;border-radius:8px;padding:1px 8px;font:700 .82rem var(--ar)}
+.idebar button{direction:rtl;display:flex;align-items:center;gap:6px;border:1px solid #ffe066;background:#ffe066;color:#1e1e1e;border-radius:8px;padding:2px 10px;font:800 .82rem var(--ar)}
+.pystat{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:.85rem;border-radius:999px;padding:2px 12px;background:#f1f4fa;color:var(--mu)}
+.pystat.ready{background:var(--gr2);color:var(--gr)}.pystat.off{background:var(--am2);color:var(--am)}
+.vcards{grid-template-columns:repeat(auto-fill,minmax(132px,1fr))}
+.vcard b{font-size:1.6rem}.vcard small{font-size:.85rem}.vcard code{font-size:.9rem}
+.memempty{grid-column:1/-1;color:var(--mu);font-weight:700;display:flex;gap:8px;align-items:center;justify-content:center;padding:18px;border:2px dashed var(--line);border-radius:14px}
+.mcode div.err{background:rgba(225,29,72,.3)}
+@media (max-width:1100px){
+ .idegrid{grid-template-columns:1fr 1fr;grid-template-rows:auto 440px 160px 620px;flex:none}
+ .g-in{grid-column:1/-1;grid-row:1}.g-code{grid-column:1/-1;grid-row:2}.g-out{grid-column:1/-1;grid-row:3}.g-flow{grid-column:1;grid-row:4}.g-mem{grid-column:2;grid-row:4}
+}
+
+/* ===== v5: bigger, scalable text ===== */
+:root{--tz:1}
+html{font-size:calc(16px*var(--tz))}
+body{font-size:calc(19px*var(--tz))}
+.tzbar{display:flex;align-items:center;gap:2px;border:2px solid var(--line);border-radius:12px;background:#fff;padding:2px;direction:ltr}
+.tzbar button{border:0;background:none;width:36px;height:32px;border-radius:9px;font:800 .95rem var(--mono);color:var(--ink)}
+.tzbar button:hover{background:#eef2f9}
+.tzbar span{font:800 .8rem var(--mono);color:var(--mu);min-width:44px;text-align:center}
+.idegrid{grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) minmax(0,.9fr);grid-template-rows:auto minmax(0,1fr) calc(160px*var(--tz))}
+.say{font-size:1.3rem;line-height:1.9}
+.say code{font-size:1.1rem}
+.cmp{font-size:1.05rem}
+.ide{font-size:calc(19.5px*var(--tz))}
+#edGut,#edHL,#edTA{font-size:calc(19.5px*var(--tz))}
+.edgut{width:calc(56px*var(--tz))}
+#edHL,#edTA{padding-left:calc(68px*var(--tz))}
+.ln .no{width:calc(50px*var(--tz))}
+#inp{font-size:1.55rem}
+.exb{font-size:.95rem}
+.term{font-size:calc(19px*var(--tz))}
+.term .out{font-size:1.8rem}
+.vcards{grid-template-columns:repeat(auto-fill,minmax(calc(140px*var(--tz)),1fr))}
+.vcard b{font-size:1.85rem}.vcard b.long{font-size:1rem}
+.vcard small{font-size:.95rem}.vcard code{font-size:1rem}.vcard em{font-size:.7rem}
+.mrow .ad,.mrow .tg{font-size:.75rem}
+.ph{font-size:1.05rem}
+#fc text{font-size:17.5px}#fc text.m,#fc tspan.m{font-size:16px}#fc tspan.ar{font-size:17.5px}#fc text.lbl{font-size:15px}
+.pkt{font-size:1.05rem}
+.mcode{font-size:calc(14.5px*var(--tz))}
+.mchip{font-size:.9rem}
+.sbig{font-size:1.8rem}
+
+/* ===== v6: zoomed-in micro-slides ===== */
+.slide{padding:14px 20px}
+.sl{max-width:1400px;gap:16px}
+.one{align-items:center;text-align:center;gap:clamp(10px,2.2vh,22px)}
+.one .vis{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,44px);flex-wrap:wrap;min-height:min(44vh,420px);width:100%}
+.one h1{margin:0;font-size:clamp(2.1rem,5.6vh,3.5rem);line-height:1.25}
+.one h1 code{font-size:1em;padding:0 .2em;border-radius:12px}
+code.pk{color:var(--pk)}code.bl{color:var(--bl)}code.am{color:var(--am)}
+.one .cap{margin:0;font-size:clamp(1.25rem,3.1vh,1.8rem);color:#3c4763;font-weight:600;max-width:1050px;line-height:1.6}
+.one .cap code{font-size:.95em}
+.one .badge{font-size:clamp(.85rem,1.8vh,1.05rem);padding:4px 16px}
+.one .kid{height:clamp(170px,38vh,360px);width:auto}
+.one .gemsvg{height:clamp(160px,36vh,330px);width:auto}
+.duo2{display:flex;align-items:flex-end;gap:clamp(10px,3vw,40px);position:relative;padding-top:60px}
+.bubble2{position:absolute;top:0;right:8%;background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:4px 20px;font-weight:800;font-size:clamp(1.1rem,2.6vh,1.5rem);white-space:nowrap}
+.bubble2::after{content:"";position:absolute;bottom:-10px;right:30px;width:16px;height:16px;background:#fff;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg)}
+.qcard.big{padding:18px 30px;border-width:3px;border-radius:22px;margin:0}
+.qcard.big code{font-size:clamp(1.6rem,4vh,2.4rem)}
+.qcard.big .st{font-size:1.15rem;padding:4px 16px 4px 12px}
+.one .bags{max-width:380px}
+.one .bag,.one .left{padding:8px}.one .bag i,.one .left i{width:20px;height:20px}
+.rv{display:flex;align-items:center;gap:clamp(14px,3vw,40px);direction:ltr}
+.rv .who{gap:10px}
+.rv .kid{height:clamp(150px,30vh,280px)}
+.rv .st{font-size:1.15rem;padding:4px 16px 4px 12px}
+.bigres{padding:14px 34px;border-radius:22px;color:#fff;font:800 clamp(2rem,5.4vh,3.2rem) var(--mono);box-shadow:var(--sh)}
+.inbig{display:flex;align-items:center;gap:14px;direction:ltr;background:var(--am2);border:3px dashed var(--am);border-radius:26px;padding:22px 30px}
+.inbig .ln1{color:var(--am)}
+.cellv{display:flex;flex-direction:column;align-items:center;border:3px solid var(--c);border-radius:18px;background:#fff;padding:8px 26px 10px;min-width:130px}
+.cellv small{font:800 1rem var(--mono);color:var(--c);direction:ltr}
+.cellv small{unicode-bidi:plaintext}
+.cellv b{font:800 clamp(2.6rem,7vh,4.2rem)/1.15 var(--mono);color:var(--ink)}
+.scr{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;background:#0f172a;border:6px solid var(--ink);border-radius:22px;padding:30px 36px;direction:ltr}
+.scr span{font:800 clamp(1.8rem,5vh,3rem) var(--mono);color:#334155;padding:4px 18px;border-radius:12px;animation:outlit 4s infinite}
+@keyframes outlit{0%,22%{color:#4ade80;background:rgba(74,222,128,.12)}26%,100%{color:#334155;background:none}}
+.exwrap{display:flex;flex-direction:column;align-items:center;gap:22px}
+.exbig{display:flex;align-items:center;gap:24px;direction:ltr;background:#fff;border:2px solid var(--line);border-radius:24px;padding:18px 34px;box-shadow:var(--sh)}
+.exbig .i{font:800 clamp(2rem,5.6vh,3.3rem) var(--mono);color:#7a4a00;background:var(--am2);border-radius:14px;padding:4px 18px}
+.exbig .o{font:800 clamp(2rem,5.6vh,3.3rem) var(--mono);color:var(--gr)}
+.exbig.bad{border-color:var(--rd);background:var(--rd2)}.exbig.bad .o{color:var(--rd);text-decoration:line-through}
+.why{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.cmp.big{font-size:clamp(1.15rem,2.8vh,1.6rem);padding:4px 16px;border-width:2.5px;border-radius:14px}
+.qbig{display:grid;grid-template-columns:1fr 1fr;gap:22px;width:min(100%,1100px)}
+.qbig div{background:#fff;border:3px solid var(--pu);border-radius:24px;padding:26px;font-size:clamp(1.4rem,3.6vh,2.1rem);font-weight:800;box-shadow:var(--sh)}
+.qbig small{display:flex;justify-content:center;align-items:center;gap:8px;color:var(--pu);font-size:1rem;margin-bottom:10px}
+.qbig code{font-size:1.1em}
+.chipline.big{max-width:1000px;gap:14px}
+.chipline.big .cw{font-size:clamp(1.25rem,3vh,1.7rem);padding:6px 18px;border-radius:14px}
+.ribbon.big{font-size:clamp(1.8rem,5vh,3rem);padding:14px 30px;letter-spacing:2px;direction:ltr}
+.namesbig{width:min(100%,820px)}
+.namesbig .vrow{padding:12px 22px;margin-bottom:10px;gap:18px}
+.namesbig .old{font-size:1.5rem;width:40px}.namesbig .new{font-size:1.6rem}.namesbig small{font-size:1.1rem}
+.nametab.big{width:min(100%,900px);padding:24px 28px}
+.nametab.big h4{font-size:1.3rem}
+.nametab.big .nr{font-size:1.1rem;padding:8px 14px}.nametab.big .nr code{font-size:1.2rem}.nametab.big .nr .ic{width:20px;height:20px}
+/* cover / end zoom */
+.cover .kid{height:clamp(160px,34vh,320px);width:auto}.cover .gemsvg{height:clamp(130px,26vh,250px);width:auto}
+.cover h1{font-size:clamp(2.6rem,7vh,4.4rem)}.cover .q{font-size:clamp(1.3rem,3vh,1.8rem)}
+#castEnd .kid{height:clamp(120px,24vh,230px);width:auto}#castEnd .gemsvg{height:clamp(90px,17vh,170px);width:auto}
+/* other slides zoom */
+.sl-h h1{font-size:clamp(2rem,5vh,3rem)}.sl-h p{font-size:clamp(1.05rem,2.6vh,1.4rem)}
+.psd{max-width:1180px;font-size:clamp(1rem,2.75vh,1.5rem)}
+.pr em{font-size:.75em}
+#psNext,#psAll,#psReset{font-size:1.1rem}
+.build{grid-template-columns:minmax(320px,.8fr) minmax(0,1.2fr)}
+.idea{font-size:clamp(1rem,2.3vh,1.25rem);padding:clamp(6px,1.1vh,12px) 16px}
+.idea .sg{width:46px;height:28px}
+#bfc{max-height:calc(100vh - var(--hh) - var(--fh) - 150px)}
+.pre{font-size:clamp(1rem,2.6vh,1.4rem)}
+.fm{font-size:1.15rem}.rulebox{font-size:1.2rem}
+.atabs button{font-size:1.1rem}
+.altv{max-width:1050px}.altv .why{font-size:1.25rem}
+.sim{gap:56px}
+.mcode{font-size:calc(15.5px*var(--tz))}
+.thead{font-size:.95rem}.trow .o,.trow .i{font-size:1.05rem}
+.cta h2{font-size:clamp(1.5rem,3.6vh,2.2rem)}
+/* IDE: balanced gutters */
+.full{padding:10px 12px}.full .sl{gap:10px}
+.idegrid{gap:10px}
+.runbar{padding:8px 14px;gap:4px}
+.inzone{padding:10px 14px;justify-content:center}
+.flowpane{display:flex;align-items:safe center;justify-content:safe center}
+.g-mem .pb{display:flex;flex-direction:column;gap:12px}
+.g-mem .vcards{margin:0}.g-mem .legend{margin-top:0}
+.term{padding:10px 18px}
+
+/* v6 fixes */
+.one .vis{min-height:0}
+.one{gap:clamp(14px,3vh,30px)}
+.why{direction:ltr}
+.psd{font-size:clamp(.92rem,2.25vh,1.3rem);line-height:1.75}
+#s-logic .sl{gap:12px}
+.idea{padding:clamp(4px,.8vh,10px) 14px;font-size:clamp(.95rem,2.1vh,1.18rem)}
+#s-build .sl{gap:12px}
+.altv .pre{font-size:clamp(.92rem,2.15vh,1.25rem);line-height:1.75}
+#s-alts .sl{gap:12px}
+.mcode{font-size:calc(16.5px*var(--tz))}
+.sbig{font-size:2.1rem;min-height:110px}
+.sim{gap:60px}
+.build{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}
+.fcbox{align-items:center}
+
+/* ===== v7: closer, bigger, full-bleed ===== */
+:root{--hh:52px;--fh:58px}
+.hico{width:36px;height:36px}.brand i{width:32px;height:32px}
+.foot .btn{padding:6px 16px}
+.slide{padding:10px 16px}
+.sl{max-width:1560px}
+.one .kid{height:clamp(190px,44vh,440px)}
+.one .gemsvg{height:clamp(170px,40vh,400px)}
+.rv .kid{height:clamp(160px,34vh,340px)}
+.one h1{font-size:clamp(2.4rem,6.6vh,4.3rem)}
+.one .cap{font-size:clamp(1.35rem,3.6vh,2.2rem)}
+.one .badge{font-size:clamp(.95rem,2vh,1.2rem)}
+.bigres{font-size:clamp(2.3rem,6.4vh,4rem)}
+.cellv b{font-size:clamp(3rem,8.5vh,5.2rem)}
+.scr span{font-size:clamp(2rem,6vh,3.6rem)}
+.exbig .i,.exbig .o{font-size:clamp(2.3rem,6.6vh,4rem)}
+.cmp.big{font-size:clamp(1.25rem,3.2vh,1.9rem)}
+.qbig{width:min(100%,1300px)}.qbig div{font-size:clamp(1.6rem,4.2vh,2.6rem)}
+.chipline.big{max-width:1200px}.chipline.big .cw{font-size:clamp(1.4rem,3.5vh,2.1rem)}
+.ribbon.big{font-size:clamp(2rem,6vh,3.6rem)}
+.namesbig{width:min(100%,1000px)}.namesbig .new{font-size:2rem}.namesbig .old{font-size:1.8rem}.namesbig small{font-size:1.3rem}
+.nametab.big{width:min(100%,1100px)}.nametab.big .nr{font-size:1.3rem;padding:10px 16px}.nametab.big .nr code{font-size:1.45rem}
+.psd{max-width:1400px;font-size:clamp(.95rem,2.45vh,1.5rem)}
+.altv{max-width:1250px}.altv .pre{font-size:clamp(.95rem,2.3vh,1.45rem)}
+.pre{font-size:clamp(1.05rem,2.8vh,1.6rem)}
+.bug{gap:28px}
+.sl-h h1{font-size:clamp(2.1rem,5.4vh,3.3rem)}
+/* IDE: full-bleed, one-line run bar, viewport-scaled text */
+.full{padding:6px 8px}.full .sl{gap:6px}
+.runbar{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"say ctrl" "prog prog";column-gap:14px;row-gap:4px;padding:6px 12px;border-radius:14px}
+.runbar .crow{grid-area:ctrl;flex-wrap:nowrap}.runbar .say{grid-area:say;min-height:0}.runbar .prog{grid-area:prog;height:5px}
+.runbar .btn{padding:6px 14px}.runbar .btn.ico{width:38px;height:38px}
+.say{font-size:calc(clamp(16px,1.3vw,26px)*var(--tz));line-height:1.6}
+.say code,.say .cmp{font-size:.92em}
+.idegrid{gap:8px;grid-template-columns:minmax(0,1.05fr) minmax(0,1.42fr) minmax(300px,.88fr);grid-template-rows:auto minmax(0,1fr) calc(clamp(120px,15vh,190px)*var(--tz))}
+.pane{border-radius:14px}
+.ph{padding:5px 12px;font-size:calc(clamp(14px,1.05vw,20px)*var(--tz))}
+.ide,#edGut,#edHL,#edTA{font-size:calc(clamp(16px,1.24vw,27px)*var(--tz));line-height:1.85}
+.edgut{width:calc(clamp(40px,2.9vw,64px)*var(--tz))}
+#edHL,#edTA{padding-left:calc(clamp(50px,3.6vw,78px)*var(--tz));padding-right:10px}
+.ln .no{width:calc(clamp(38px,2.7vw,60px)*var(--tz));padding-right:12px}
+.idebar{padding:5px 10px}.idebar .pystat{font-size:.75rem;padding:1px 10px;margin-left:8px}
+.inzone{padding:8px 12px;gap:6px}
+#inp{font-size:calc(clamp(20px,1.65vw,34px)*var(--tz));padding:5px 12px}
+.inrow .btn{padding:8px 18px;font-size:calc(clamp(15px,1.1vw,22px)*var(--tz))}
+.exb{font-size:calc(clamp(13px,.95vw,19px)*var(--tz))}
+.term{font-size:calc(clamp(16px,1.2vw,26px)*var(--tz));padding:8px 16px}
+.term .out{font-size:1.6em}
+.flowpane{padding:8px 6px 46px}
+#fc text{font-size:18px}#fc text.m,#fc tspan.m{font-size:16.5px}#fc tspan.ar{font-size:18px}#fc text.lbl{font-size:15.5px}
+.g-mem .pb{padding:10px;gap:10px}
+.vcards{grid-template-columns:repeat(auto-fill,minmax(calc(clamp(130px,9.6vw,230px)*var(--tz)),1fr));gap:12px 8px}
+.vcard{padding:calc(clamp(12px,1vw,20px)*var(--tz)) 6px 8px}
+.vcard b{font-size:calc(clamp(24px,2.1vw,46px)*var(--tz))}
+.vcard b.long{font-size:calc(clamp(13px,1vw,20px)*var(--tz))}
+.vcard small{font-size:calc(clamp(12px,.95vw,19px)*var(--tz))}
+.vcard code{font-size:calc(clamp(13px,1.05vw,21px)*var(--tz))}
+.mrow .ad,.mrow .tg{font-size:calc(clamp(10px,.75vw,15px)*var(--tz))}
+.mxh{font-size:calc(clamp(12px,.9vw,17px)*var(--tz))}
+.pkt{font-size:calc(clamp(15px,1.15vw,24px)*var(--tz))}
+.idebar>*{white-space:nowrap;flex:none}
+.psd{font-size:clamp(.92rem,2.3vh,1.45rem)}
+@media (max-width:1450px){.idebar>span:not(.pystat){display:none}.idebar .pystat{margin-left:0}}
+
+/* ===== v8: fill the screen ===== */
+.slide.fit{overflow:hidden;align-items:center;justify-content:center;padding:0}
+.slide.fit>.sl{width:max-content;max-width:min(1500px,96vw);margin:0;transform-origin:center center;flex:none}
+.slide.fit .one .vis{width:auto}
+.slide.fit .psd,.slide.fit .altv{width:auto;min-width:min(900px,90vw)}
+.slide.fit .tt{min-width:min(900px,90vw)}
+.ide,#edGut,#edHL,#edTA{font-size:calc(var(--codefs,19px)*var(--tz))}
+.ln .no,.edgut{width:calc(var(--codefs,19px)*2.8*var(--tz))}
+#edHL,#edTA{padding-left:calc(var(--codefs,19px)*3.4*var(--tz))}
+.idegrid{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) minmax(290px,.85fr)}
+.slide.fit #tRes{max-height:min(150px,18vh);overflow:auto}
+.psd{line-height:1.6}
+
+/* ===== v9: guided writing ===== */
+#fc .nd[data-g=hide],#fc .ed[data-g=hide],#fc .lbl[data-g=hide]{opacity:0}
+#fc .nd[data-g]{filter:none}
+#fc .nd[data-g=done] .sh{stroke:var(--k);fill:color-mix(in srgb,var(--k) 12%,#fff)}
+#fc .nd[data-g=now] .sh{stroke:#f59e0b;fill:#fff6d1;stroke-width:3.8;animation:gglow 1.4s ease-in-out infinite}
+@keyframes gglow{50%{filter:drop-shadow(0 0 12px rgba(245,158,11,.9))}}
+#fc .ed[data-g=show]{stroke:var(--navy);stroke-width:2.6;marker-end:url(#mb);opacity:1}
+.ghint{background:#1e1e1e!important;color:#ffe066;padding:2px 12px!important;border-radius:8px;white-space:pre;direction:ltr;display:inline-block;line-height:1.5}
+.gst{display:inline-flex;gap:5px;align-items:center;font-weight:800;font-size:.8em;padding:1px 10px;border-radius:999px;animation:pop .3s both}
+.gst.t{background:var(--bl2);color:var(--bl)}.gst.w{background:var(--rd2);color:var(--rd)}
+.gbtns{display:inline-flex;gap:6px;margin-inline-start:6px}
+.gbtns .btn{padding:3px 10px;font-size:.72em;border-radius:10px}
+.idebar #bGuide{background:#16a34a;border-color:#16a34a;color:#fff}
+.idebar #bGuide.on{background:#e11d48;border-color:#e11d48}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+ <div class="brand"><i>PS</i><b>معمل حل المشكلات</b></div>
+ <nav class="chap" id="chap" aria-label="المراحل"></nav>
+ <div class="tzbar" role="group" aria-label="حجم الكلام"><button id="tzDown" aria-label="صغّر الكلام">A−</button><span id="tzVal">100%</span><button id="tzUp" aria-label="كبّر الكلام">A+</button></div>
+ <button class="hico" id="openWB" title="السبورة" aria-label="السبورة"></button>
+ <button class="hico" id="bFull" title="ملء الشاشة" aria-label="ملء الشاشة"></button>
+</header>
+
+<main class="stage" id="stage">
+
+<section class="slide" id="s-cover" data-ch="0"><div class="sl cover" style="align-items:center;text-align:center;gap:16px">
+ <span class="badge" style="--c:var(--navy);--c2:#e9edf7">Codeforces · Problem B</span>
+ <div class="cast" id="castCover"></div>
+ <h1>Memo and Momo</h1>
+ <p class="q">مين اللي هيكسب اللعبة؟</p>
+ <div class="btns" style="justify-content:center"><a class="btn" id="plink" target="_blank" rel="noopener"></a><button class="btn p" id="startDeck"></button></div>
+ <div class="hint1" id="thinkFirst"></div>
+</div></section>
+
+<div id="micro"></div>
+
+<section class="slide" id="s-logic" data-ch="2"><div class="sl">
+ <div class="sl-h"><span class="badge" style="--c:var(--pu);--c2:var(--pu2)">Design</span><h1>خطوات الحل</h1><p>Pseudocode: الحل بكلام قريب من الكود</p></div>
+ <div class="psd" id="psd"></div>
+ <div class="btns" style="justify-content:center"><button class="btn p" id="psNext"></button><button class="btn" id="psAll"></button><button class="btn" id="psReset"></button></div>
+</div></section>
+
+<section class="slide" id="s-build" data-ch="2"><div class="sl" style="height:100%;max-width:1240px">
+ <div class="sl-h"><span class="badge" style="--c:var(--pu);--c2:var(--pu2)">Design</span><h1>نبني الفلوتشارت</h1><p>اختاروا الخطوة اللي بعدها، وشوفوها تترسم</p></div>
+ <div class="build">
+  <div class="ideas">
+   <div class="top"><h3 id="ideasH"></h3><span class="btns"><button class="btn sm" id="bHelp"></button><button class="btn sm" id="bAuto"></button><button class="btn sm ico" id="bReset" style="width:34px;height:34px;padding:4px"></button></span></div>
+   <div class="lprog"><i id="bProg"></i></div>
+   <div id="ideaList" style="display:flex;flex-direction:column;gap:7px"></div>
+   <div id="bDone" class="bdone" hidden></div>
+  </div>
+  <div class="fcbox" id="fcBBox"></div>
+ </div>
+</div></section>
+
+<section class="slide full" id="s-ide" data-ch="3"><div class="sl">
+ <div class="runbar">
+  <div class="crow">
+   <button class="btn ico" id="bPrev" disabled aria-label="الخطوة السابقة"></button><span class="cnt" id="cnt">0 / 0</span><button class="btn ico" id="bNext" disabled aria-label="الخطوة التالية"></button>
+   <button class="btn" id="bPlay"></button>
+   <select id="spd" aria-label="السرعة"><option value="1.6">بطيء</option><option value="1" selected>عادي</option><option value=".6">سريع</option></select>
+  </div>
+  <div class="say" id="say" aria-live="polite"></div>
+  <div class="prog"><i id="prog"></i></div>
+ </div>
+ <div class="idegrid">
+  <section class="pane g-flow"><div class="ph"><span id="flowH"></span><span class="zbar"><button class="zb" data-z="out" aria-label="تصغير">−</button><button class="zb" data-z="fit">fit</button><button class="zb" data-z="in" aria-label="تكبير">+</button></span></div><div id="legSlot"></div><div class="flowpane" id="flowPane"></div></section>
+  <section class="pane g-in"><div class="ph"><span id="inH"></span><span class="tagk">INPUT</span></div>
+   <div class="inzone">
+    <div class="inrow"><input id="inp" value="15 7 3" spellcheck="false" aria-label="الـ Input"><button class="btn p" id="bStart"></button></div>
+    <div class="exrow"><button class="exb" data-ex="15 7 3">15 7 3</button><button class="exb" data-ex="22 10 2">22 10 2</button><button class="exb" data-ex="7 9 3">7 9 3</button><button class="exb" data-ex="5 7 2">5 7 2</button></div>
+   </div>
+  </section>
+  <section class="pane g-code"><div class="idebar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>memo_momo.py</span><span class="pystat" id="pyStat"></span>
+    <select id="ver" aria-label="كود جاهز"><option value="">كود جاهز…</option><option value="good">الحل الصح</option><option value="bug">نسخة فيها غلطة</option><option value="alt1">الشرط جوّا الـ if</option><option value="alt2">if جوّا if</option><option value="alt3">جدول الإجابات</option></select>
+    <button id="bGuide"></button><button id="bEdit" hidden></button></div>
+   <div class="edwrap" id="edwrap"><div class="edgut"><div id="edGut"></div></div><pre id="edHL" aria-hidden="true"></pre><textarea id="edTA" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="محرر الكود"></textarea><span class="edhint">اكتبوا الكود هنا · Ctrl+Enter للتشغيل</span></div>
+   <div class="ide" id="code" hidden></div></section>
+  <section class="pane g-out"><div class="ph"><span id="outH"></span><span class="tagk">OUTPUT</span></div><div class="term" id="term"></div></section>
+  <section class="pane g-mem"><div class="ph"><span id="memH"></span><button class="namebtn" id="nameBtn">Aa قواعد التسمية</button></div>
+   <div class="namepop nametab" id="namePop" hidden></div>
+   <div class="pb">
+    <div class="vcards" id="vcards"></div>
+    <div class="mxh"><span>جوّا الـ RAM</span><button class="cw" data-c="mem" style="--c:var(--navy)">bit و byte</button></div>
+    <div class="mx" id="mx"></div>
+    <div class="legend"><span><i style="width:8px;height:8px"></i>bit</span><span><i style="width:34px;height:10px"></i>8 bit = byte</span><span><i style="width:60px;height:12px"></i>8 byte = int</span></div>
+   </div>
+  </section>
+ </div>
+</div></section>
+
+<section class="slide" id="s-test" data-ch="4"><div class="sl" style="gap:16px">
+ <div class="sl-h"><span class="badge" style="--c:var(--am);--c2:var(--am2)">Test</span><h1>نختبر الكود</h1><p>تابعوا رحلة البيانات: Input ثم الكود والذاكرة ثم Output</p></div>
+ <div class="tbar">
+  <span class="seg" id="tVer"><button data-v="good" class="on">الحل الصح</button><button data-v="bug">نسخة فيها غلطة</button><button data-v="mine">كودكم</button></span>
+  <button class="btn p" id="tAll"></button>
+  <input id="tIn" placeholder="12 18 6" aria-label="حالة من عندكم"><button class="btn" id="tOne"></button>
+ </div>
+ <div class="cases" id="cases"></div>
+ <div class="sim">
+  <div class="sbox" id="sIn" style="--c:var(--am)"><div class="ph"><span id="sInH"></span><span class="tagk">INPUT</span></div><div class="sbig" id="sInV">—</div></div>
+  <div class="sbox" id="sExec" style="--c:var(--pu)"><div class="ph"><span id="sExH"></span><span class="tagk">CODE + MEMORY</span></div><div class="mcode" id="mcode"></div><div class="mmem" id="mmem"></div></div>
+  <div class="sbox" id="sOut" style="--c:var(--gr)"><div class="ph"><span id="sOutH"></span><span class="tagk">OUTPUT</span></div><div class="sbig" id="sOutV">—</div><div class="verd" id="sVerd"></div></div>
+ </div>
+ <div class="tt"><div class="thead"><span>Input</span><span>المتوقع</span><span>الكود طلّع</span><span></span><span></span></div><div id="tRes"></div></div>
+ <div class="score" id="tScore"></div>
+</div></section>
+
+<section class="slide" id="s-bug" data-ch="5"><div class="sl">
+ <div class="sl-h"><span class="badge" style="--c:var(--rd);--c2:var(--rd2)">Improve</span><h1>الغلطة اللي الاختبار كشفها</h1><p>Input: <code>22 10 2</code> · المتوقع <b class="ok">Both</b> · طلع <b class="no">Memo</b></p></div>
+ <div class="bug">
+  <div class="pre" id="bugCode"></div>
+  <div class="bugexp"><div style="display:flex;flex-direction:column;gap:8px" id="flowmini"></div><div class="rulebox">الحالة اللي فيها شروط أكتر تتسأل الأول.</div><div class="btns"><button class="btn p" id="seeBug"></button><button class="btn" id="testBug"></button></div></div>
+ </div>
+</div></section>
+
+<section class="slide" id="s-alts" data-ch="5"><div class="sl">
+ <div class="sl-h"><span class="badge" style="--c:var(--gr);--c2:var(--gr2)">Improve</span><h1>نفس المسألة… 4 حلول</h1><p>مفيش حل واحد صح</p></div>
+ <div class="atabs" id="atabs"></div><div id="altv"></div>
+</div></section>
+
+<section class="slide" id="s-end" data-ch="5"><div class="sl" style="align-items:center;text-align:center;max-width:820px">
+ <div class="cast" id="castEnd"></div>
+ <div class="sl-h"><h1>خلّصنا المسألة</h1><p>عدّينا على الـ 6 مراحل</p></div>
+ <div class="trail" id="trail"></div>
+ <div class="cta"><h2>المسألة الجاية: Ali Baba and Puzzles</h2><p>فكّروا فيها قبل الحصة الجاية</p><button class="btn" id="ctaNext"></button></div>
+</div></section>
+</main>
+
+<footer class="foot">
+ <div class="fside"><button class="btn sm" id="fabMem"></button></div>
+ <div class="fnav"><button class="btn" id="prevS"></button><span class="cntr" id="cntr"></span><div class="dots" id="dots"></div><button class="btn p" id="nextS"></button></div>
+ <div class="fside l"><button class="btn sm" id="nextBtn"></button></div>
+</footer>
+
+<svg id="beams" aria-hidden="true"><defs id="beamDefs"></defs></svg>
+
+<div class="shbg" id="shbg" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="شرح المفهوم"><button class="shx" id="shx" aria-label="إغلاق"></button><div class="shtabs" id="shTabs"></div><div class="shbody" id="shBody"></div></div>
+
+<div class="hintp" id="hintp" hidden role="dialog" aria-label="المسألة الجاية">
+ <button class="shx" id="hpx" aria-label="إغلاق"></button>
+ <span class="badge" style="--c:var(--bl);--c2:var(--bl2)">المرة الجاية</span>
+ <h2>D. Ali Baba and Puzzles</h2>
+ <p>علي بابا معاه 4 أرقام <code>a b c d</code>. عايز يحط بين <code>a</code> و<code>b</code> و<code>c</code> عمليتين من <b>+ − ×</b>، كل عملية <b>مرة واحدة بس</b>، علشان الناتج يطلع <code>d</code>.</p>
+ <div class="puz"><b>3</b><i>?</i><b>4</b><i>?</i><b>5</b><span class="eq">=</span><b style="background:var(--gr2);border-color:var(--gr)">23</b></div>
+ <div class="ops"><span>+</span><span style="animation-delay:.15s">−</span><span style="animation-delay:.3s">×</span></div>
+ <ul class="hl">
+  <li><b>1</b><span>المربعين دول ممكن يتملوا بكام طريقة؟ عدّوهم بالورقة والقلم.</span></li>
+  <li><b>2</b><span>طب لو خلّينا الكمبيوتر يجرّب كل الطرق واحدة واحدة؟</span></li>
+  <li><b>3</b><span><code>3 + 4 × 5</code> = كام؟ <code>23</code> ولا <code>35</code>؟</span></li>
+ </ul>
+ <p style="font-weight:800;margin-bottom:8px">ابحثوا عن المفهوم ده واعرفوا يعني إيه:</p>
+ <div class="search" id="searchBox">Brute Force<small>القوة الغاشمة</small></div>
+ <a class="btn p" id="nextLink" target="_blank" rel="noopener" style="width:100%"></a>
+</div>
+
+<div class="wbw" id="wbw" hidden>
+ <div class="wbh" id="wbh"><b id="wbTitle"></b><button id="wbx" aria-label="إغلاق"></button></div>
+ <div class="wbt" id="wbt"></div>
+ <div class="wbs" id="wbs"></div>
+ <div class="wbfoot">اسحبوا الأشكال · دبل كليك على الكلام علشان تكتبوا · حددوا شكل وغيّروا لونه أو حجمه</div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+"use strict";
+const PROB_URL="https://codeforces.com/group/MWSDmqGsZm/contest/326175/problem/B";
+const NEXT_URL="https://codeforces.com/group/MWSDmqGsZm/contest/326175/problem/D";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ============ icons ============ */
+const IP={
+ check:'<path d="M20 6 9 17l-5-5"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',
+ left:'<path d="M19 12H5M12 19l-7-7 7-7"/>',right:'<path d="M5 12h14M12 5l7 7-7 7"/>',down:'<path d="M12 5v14M5 12l7 7 7-7"/>',
+ play:'<path d="M7 4.5v15l12-7.5z"/>',pause:'<path d="M8 5v14M16 5v14"/>',restart:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+ board:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21l4-4 4 4M7 9h4M7 12h7"/>',full:'<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>',
+ cpu:'<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+ ext:'<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+ bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+ alert:'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+ bug:'<rect x="8" y="6" width="8" height="14" rx="4"/><path d="M19 7l-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4l1 2M14 4l-1 2"/>',
+ flag:'<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>',box:'<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+ flask:'<path d="M9 3h6M10 3v6L4 19a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3L14 9V3"/>',
+ spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>',copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',
+ repeat:'<path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"/>',
+ branch:'<circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6M18 9a9 9 0 0 1-9 9"/>',
+ hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+ inp:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',outp:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+ term:'<path d="m4 17 6-6-6-6M12 19h8"/>',code:'<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+ list:'<rect x="2" y="8" width="6" height="8" rx="1"/><rect x="9" y="8" width="6" height="8" rx="1"/><rect x="16" y="8" width="6" height="8" rx="1"/>',
+ note:'<path d="M4 4h16v11l-5 5H4z"/><path d="M15 20v-5h5"/>',type:'<path d="M4 7V5h16v2M9 19h6M12 5v14"/>',
+ flow:'<rect x="8" y="2" width="8" height="5" rx="2.5"/><path d="M12 7v3"/><path d="M12 10l5 4-5 4-5-4z"/><path d="M12 18v4"/>',
+ trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/>',
+ pen:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+ hand:'<path d="M9 11V5a1.5 1.5 0 0 1 3 0v6M12 10V4a1.5 1.5 0 0 1 3 0v7M15 10V6a1.5 1.5 0 0 1 3 0v8a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.3 13a1.5 1.5 0 0 1 2.4-1.8L9 14"/>',
+ shapes:'<rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/><path d="M12 3l4 7H8z"/>'
+};
+const ic=(n,s="")=>`<svg class="ic" viewBox="0 0 24 24" ${s?`style="${s}"`:""} aria-hidden="true">${IP[n]}</svg>`;
+const setI=(sel,icon,txt)=>{const el=$(sel);if(el)el.innerHTML=ic(icon)+(txt?`<span class="lbl">${txt}</span>`:"");};
+let toastT;function toast(h,ms=4200){const t=$("#toast");t.innerHTML=ic("info")+`<span>${h}</span>`;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,ms);}
+
+/* ============ characters ============ */
+function kid(o){const s=o.skin,sh=o.shirt;
+ const hair=o.style==="curl"
+  ?`<path d="M50 104C44 58 74 40 100 40s58 16 50 64c-6-20-22-32-50-32S56 84 50 104Z" fill="${o.hair}"/><circle cx="66" cy="62" r="13" fill="${o.hair}"/><circle cx="86" cy="49" r="14" fill="${o.hair}"/><circle cx="110" cy="47" r="14" fill="${o.hair}"/><circle cx="132" cy="58" r="13" fill="${o.hair}"/>`
+  :`<path d="M52 104C48 66 70 48 100 48s52 18 48 56c-10-16-28-22-48-22s-38 6-48 22Z" fill="${o.hair}"/><path d="M50 88C52 50 148 50 150 88Z" fill="${o.cap}"/><path d="M98 82h70c7 0 7 11 0 12H98Z" fill="${o.cap}"/><path d="M60 82h82" stroke="rgba(255,255,255,.35)" stroke-width="4"/>`;
+ const card=o.num!=null?`<g transform="translate(100 200) rotate(${o.tilt||-4})"><rect x="-38" y="-26" width="76" height="52" rx="12" fill="#fff" stroke="${sh}" stroke-width="4"/><text x="0" y="11" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="800" font-size="30" fill="${sh}">${o.num}</text></g><circle cx="60" cy="206" r="11" fill="${s}"/><circle cx="140" cy="200" r="11" fill="${s}"/>`:`<circle cx="58" cy="214" r="11" fill="${s}"/><circle cx="142" cy="214" r="11" fill="${s}"/>`;
+ return `<svg class="kid" viewBox="0 0 200 244" width="${o.w||160}" role="img" aria-label="${o.label||""}">
+ <ellipse cx="100" cy="238" rx="62" ry="6" fill="rgba(23,33,59,.12)"/><path d="M38 238C38 186 60 162 100 162s62 24 62 76Z" fill="${sh}"/>
+ <path d="M84 162l16 18 16-18" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+ <rect x="89" y="138" width="22" height="28" rx="9" fill="${s}"/><circle cx="52" cy="106" r="10" fill="${s}"/><circle cx="148" cy="106" r="10" fill="${s}"/>
+ <circle cx="100" cy="102" r="48" fill="${s}"/>${hair}
+ <path d="M74 92q8-6 16 0M110 92q8-6 16 0" fill="none" stroke="${o.hair}" stroke-width="4" stroke-linecap="round"/>
+ <ellipse cx="82" cy="106" rx="5.5" ry="7" fill="#1b2440"/><ellipse cx="118" cy="106" rx="5.5" ry="7" fill="#1b2440"/>
+ <circle cx="84" cy="103" r="2" fill="#fff"/><circle cx="120" cy="103" r="2" fill="#fff"/>
+ <circle cx="70" cy="122" r="7" fill="#ff8fab" opacity=".45"/><circle cx="130" cy="122" r="7" fill="#ff8fab" opacity=".45"/>
+ <path d="M87 126q13 12 26 0" fill="none" stroke="#1b2440" stroke-width="4" stroke-linecap="round"/>${card}</svg>`;}
+const gem=(w=110)=>`<svg class="gemsvg" viewBox="0 0 120 150" width="${w}" role="img" aria-label="الرقم السحري k"><ellipse cx="60" cy="144" rx="32" ry="5" fill="rgba(23,33,59,.12)"/>
+ <g class="float d2"><polygon points="60,16 104,42 104,92 60,118 16,92 16,42" fill="#d97706"/><polygon points="60,16 104,42 60,66 16,42" fill="#fbbf24"/><polygon points="16,42 60,66 60,118 16,92" fill="#f59e0b"/>
+ <text x="60" y="96" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="800" font-size="34" fill="#fff">k</text>
+ <path d="M108 14v12M102 20h12M14 110v8M10 114h8" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/></g></svg>`;
+const MEMO={skin:"#f2c29b",shirt:"#db2777",hair:"#2b1d16",style:"curl",label:"ميمو"};
+const MOMO={skin:"#e3a87e",shirt:"#2563eb",hair:"#3a2618",style:"cap",cap:"#1e3a8a",label:"مومو"};
+
+/* ============ concepts ============ */
+const vb=(n,v,c,t="")=>`<div class="vb" style="--c:${c}"><div class="vb-b">${v}</div><div class="vb-n">${n}</div>${t?`<em>${t}</em>`:""}</div>`;
+const bags=(n,g)=>{let h="";for(let i=0;i<Math.floor(n/g);i++)h+=`<span class="bag">${"<i></i>".repeat(g)}</span>`;if(n%g)h+=`<span class="left">${"<i></i>".repeat(n%g)}</span>`;return `<div class="bags">${h}</div>`;};
+const CK=ic("check","color:var(--gr)"),XX=ic("x","color:var(--rd)");
+const CON={
+ int:{t:"رقم موجب (int)",c:"#16a34a",s:"رقم صحيح أكبر من صفر",f:[
+  ["الموجب أكبر من صفر",`<div class="nl">${[-2,-1,0,1,2,3].map(n=>`<span class="${n>0?"p":n?"n":"z"}">${n}</span>`).join("")}<span class="p">…</span></div>`],
+  ["<code>int()</code> بتحوّل النص لرقم",`<div class="r2"><span class="strc">"15"</span><span class="arw">→ int() →</span>${vb("memo_num","15","#16a34a")}</div>`],
+  ["من غير كسور",`<div class="r2"><span class="okc">15</span><span class="okc">7</span><span class="noc">15.5</span></div>`]]},
+ input:{t:"قراءة الـ Input",c:"#d97706",s:"input() و split() و map(int)",f:[
+  ["<code>input()</code> بتقرا السطر كنص",`<div class="ribbon">15 7 3</div>`],
+  ["<code>split()</code> بتقطّعه عند المسافات",`<div class="lcells"><span>"15"</span><span>"7"</span><span>"3"</span></div>`],
+  ["<code>map(int, …)</code> بتحوّلهم أرقام في 3 صناديق",`<div class="r2">${vb("memo_num",15,"#db2777")}${vb("momo_num",7,"#2563eb")}${vb("k",3,"#d97706")}</div>`]]},
+ mod:{t:"بيقبل القسمة؟ (%)",c:"#7c3aed",s:"لو باقي القسمة صفر يبقى بيقبل القسمة",f:[
+  ["15 على 3: والباقي 0",bags(15,3)],["7 على 3: والباقي 1",bags(7,3)],
+  ["<code>%</code> بتجيب الباقي",`<div class="cd">15 % 3 → <b>0</b> <span class="T">True</span><br>7 % 3 → <b>1</b> <span class="F">False</span></div>`]]},
+ eq:{t:"= ولا == ؟",c:"#0891b2",s:"واحدة بتخزّن، والتانية بتسأل",f:[
+  ["<code>=</code> تخزين",`<div class="r2"><span class="cd">x = 5</span><span class="arw">→</span>${vb("x",5,"#0891b2")}</div>`],
+  ["<code>==</code> سؤال",`<div class="cd">5 == 5 → <span class="T">True</span><br>5 == 3 → <span class="F">False</span></div>`]]},
+ bool:{t:"True و False",c:"#0891b2",s:"إجابة أي سؤال: أيوه أو لأ",f:[
+  ["أيوه أو لأ",`<div class="r2"><span class="sw on">True</span><span class="sw off">False</span></div>`],
+  ["في الذاكرة: 1 أو 0",`<div class="bitrow">${"<i>0</i>".repeat(7)}<i class="one">1</i></div>`],
+  ["نخزّن الإجابة في متغير",vb("memo_ok","True","#7c3aed","bool")]]},
+ and:{t:"and",c:"#2563eb",s:"الشرطين لازم يتحققوا مع بعض",f:[
+  ["True and True = True",`<div class="r2"><span class="lamp on"><i></i>memo</span><b>and</b><span class="lamp on"><i></i>momo</span><span class="arw">→</span><span class="lamp on big"><i></i>Both</span></div>`],
+  ["لو واحد False يبقى False",`<div class="r2"><span class="lamp on"><i></i>memo</span><b>and</b><span class="lamp"><i></i>momo</span><span class="arw">→</span><span class="lamp big"><i></i></span></div>`],
+  ["الجدول كله",`<table class="tts"><tr><td>A</td><td>B</td><td>and</td></tr><tr><td class="T">T</td><td class="T">T</td><td class="T">True</td></tr><tr><td class="T">T</td><td class="F">F</td><td class="F">False</td></tr><tr><td class="F">F</td><td class="T">T</td><td class="F">False</td></tr><tr><td class="F">F</td><td class="F">F</td><td class="F">False</td></tr></table>`]]},
+ if:{t:"if / elif / else",c:"#db2777",s:"أسئلة بالترتيب، وأول إجابة أيوه بتكسب",f:[
+  ["من فوق لتحت، وأول True بنخرج",`<div class="lad"><div class="q">memo_ok and momo_ok ? <b>→ Both</b></div><div class="dn">↓ no</div><div class="q">memo_ok ? <b>→ Memo</b></div><div class="dn">↓ no</div><div class="q">momo_ok ? <b>→ Momo</b></div><div class="dn">↓ no</div><div class="q e">else → No One</div></div>`],
+  ["لو · ولو لأ طب · غير كده",`<div class="cd"><span style="color:#C586C0">if</span> …:   <span style="color:#6A9955"># لو</span><br><span style="color:#C586C0">elif</span> …: <span style="color:#6A9955"># ولو لأ، طب</span><br><span style="color:#C586C0">else</span>:   <span style="color:#6A9955"># غير كده</span></div>`]]},
+ print:{t:"print",c:"#16a34a",s:"بتطلّع النتيجة على الشاشة",f:[
+  ["اللي بين القوسين يظهر",`<div class="r2"><span class="cd"><span style="color:#DCDCAA">print</span>(<span style="color:#CE9178">"Both"</span>)</span><span class="arw">→</span><span class="screen">Both</span></div>`],
+  ["الحروف الكبيرة فرق",`<div class="r2"><span class="okc">"No One"</span><span class="noc">"no one"</span></div>`]]},
+ big:{t:"الأرقام الكبيرة 10¹⁸",c:"#e11d48",s:"مليون مليون مليون",f:[
+  ["1 وجنبه 18 صفر",`<div class="ribbon" style="font-size:1rem;letter-spacing:1px">1,000,000,000,000,000,000</div>`],
+  ["64 bit تشيل لحد 9.2 × 10¹⁸",`<div class="bits64">${("<span>"+"<i></i>".repeat(8)+"</span>").repeat(8)}</div>`],
+  ["بايثون مش بتزعل. C++ محتاجة <code>long long</code>",`<div class="r2">${vb("memo_num","10¹⁸","#e11d48","64 bit")}</div>`]]},
+ var:{t:"المتغير = صندوق",c:"#d97706",s:"مكان في الذاكرة ليه اسم وجواه قيمة",f:[
+  ["صندوق ليه اسم",vb("x","?","#d97706")],
+  ["<code>x = 5</code>",`<div class="r2"><span class="cd">x = 5</span>${vb("x",5,"#d97706")}</div>`],
+  ["<code>x = 9</code> القديمة بتتمسح",`<div class="r2"><span class="noc">5</span><span class="arw">→</span>${vb("x",9,"#d97706")}</div>`]]},
+ name:{t:"قواعد التسمية",c:"#475569",s:"إزاي نسمّي الصندوق صح",f:[]},
+ mem:{t:"bit و byte",c:"#1d2a56",s:"مربعات صغيرة جوّا مربعات أكبر",f:[
+  ["bit = 0 أو 1",`<div class="bitrow"><i>0</i><i class="one">1</i></div>`],
+  ["8 bit = byte",`<div class="bitrow">${"01001111".split("").map(b=>`<i class="${b==1?"one":""}">${b}</i>`).join("")}</div>`],
+  ["8 byte = int",`<div class="bits64">${("<span>"+"<i></i>".repeat(8)+"</span>").repeat(8)}</div>`]]},
+ loop:{t:"اللوب",c:"#7c3aed",s:"نكرر نفس الخطوة",f:[
+  ["<code>for i in range(3):</code>",`<div class="sqs"><i>0</i><i>1</i><i>2</i></div>`],
+  ["يرجع لأوله لحد ما العدد يخلص",`<svg viewBox="0 0 160 90" width="160"><path d="M30 70 A50 40 0 1 1 130 70" fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round"/><path d="M120 62 l10 10 l6-14" fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><text x="80" y="58" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="16" fill="#7c3aed">×3</text></svg>`]]},
+ func:{t:"الفانكشن",c:"#2563eb",s:"ماكينة: مدخل ومخرج",f:[
+  ["بتاخد وتطلّع",`<div class="r2"><span class="okc">4</span><span class="arw">→</span><div class="fbox"><small>def</small>double(x)</div><span class="arw">→</span><span class="okc">8</span></div>`],
+  ["نعرّفها مرة ونستخدمها كتير",`<div class="cd"><span style="color:#569CD6">def</span> <span style="color:#DCDCAA">double</span>(x):<br>    <span style="color:#C586C0">return</span> x * <b>2</b></div>`]]},
+ list:{t:"الليست",c:"#16a34a",s:"صف صناديق، كل واحد ليه رقم",f:[
+  ["صف صناديق باسم واحد",`<div class="lst"><div class="c"><b>15</b><b>7</b><b>3</b></div><div class="x"><i>0</i><i>1</i><i>2</i></div></div>`],
+  ["العدّ بيبدأ من 0",`<div class="cd">nums[<b>0</b>] → <b>15</b><br>nums[<b>2</b>] → <b>3</b></div>`]]}
+};
+const RULES=`<h4>${ic("type")} قواعد التسمية</h4><div class="nrules">
+<span class="nr y">${CK}<code>memo_num</code></span><span class="nr y">${CK}<code>k</code></span>
+<span class="nr y">${CK}<code>momo2</code></span><span class="nr y">${CK}<code>_total</code></span>
+<span class="nr n">${XX}<code>2momo</code><small>رقم في الأول</small></span><span class="nr n">${XX}<code>memo num</code><small>مسافة</small></span>
+<span class="nr n">${XX}<code>memo-num</code><small>شَرطة</small></span><span class="nr n">${XX}<code>if</code><small>محجوزة</small></span>
+<span class="nr">${ic("alert","color:var(--am)")}<code>Memo ≠ memo</code></span><span class="nr">${ic("bulb","color:var(--bl)")}<small>اسم بيوصف اللي جوّاه</small></span></div>`;
+CON.name.custom=`<div class="nametab">${RULES}</div>`;
+const cw=(k,t)=>`<button class="cw" data-c="${k}" style="--c:${CON[k].c}">${t}</button>`;
+function openSheet(k){$("#shbg").hidden=false;$("#sheet").hidden=false;
+ $("#shTabs").innerHTML=Object.entries(CON).map(([key,c])=>`<button data-k="${key}" style="--c:${c.c}">${c.t}</button>`).join("");renderCon(k);}
+function renderCon(k){const c=CON[k];$$("#shTabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
+ const on=$("#shTabs .on");if(on)on.scrollIntoView({inline:"center",block:"nearest"});
+ $("#shBody").innerHTML=`<h2 style="color:${c.c}">${c.t}</h2><p class="sub">${c.s}</p>`+(c.custom||`<div class="frames">${c.f.map((f,i)=>`${i?`<div class="fa">${ic("right")}</div>`:""}<div class="fr" style="animation-delay:${i*.3}s"><div class="fv">${f[1]}</div><p>${f[0]}</p></div>`).join("")}</div>`);}
+const closeSheet=()=>{$("#shbg").hidden=true;$("#sheet").hidden=true;};
+$("#shTabs").onclick=e=>{const b=e.target.closest("button");if(b)renderCon(b.dataset.k);};
+$("#shx").onclick=closeSheet;$("#shbg").onclick=closeSheet;
+document.addEventListener("click",e=>{const b=e.target.closest(".cw");if(b){e.preventDefault();e.stopPropagation();openSheet(b.dataset.c);}},true);
+
+/* ============ flowchart legend (toggle) ============ */
+const LEGEND=`<div class="leg"><button class="legbtn">${ic("shapes")}دليل الأشكال</button><div class="legp" hidden>
+<div><svg viewBox="0 0 46 26" style="--k:#16a34a"><ellipse cx="23" cy="13" rx="20" ry="9"/></svg><span>بيضاوي<br><small>بداية / نهاية</small></span></div>
+<div><svg viewBox="0 0 46 26" style="--k:#d97706"><polygon points="10,4 43,4 36,22 3,22"/></svg><span>متوازي أضلاع<br><small>إدخال / إخراج</small></span></div>
+<div><svg viewBox="0 0 46 26" style="--k:#7c3aed"><rect x="4" y="4" width="38" height="18"/></svg><span>مستطيل<br><small>عملية / حساب</small></span></div>
+<div><svg viewBox="0 0 46 26" style="--k:#2563eb"><polygon points="23,2 43,13 23,24 3,13"/></svg><span>معيّن<br><small>سؤال / شرط</small></span></div>
+<div><svg viewBox="0 0 46 26" style="--k:#1d2a56"><path d="M4 13h34M31 7l7 6-7 6" style="fill:none"/></svg><span>سهم<br><small>اتجاه السير</small></span></div></div></div>`;
+document.addEventListener("click",e=>{const b=e.target.closest(".legbtn");if(!b)return;const p=b.nextElementSibling;p.hidden=!p.hidden;b.classList.toggle("on",!p.hidden);});
+
+/* ============ static labels / icons ============ */
+setI("#openWB","board");setI("#bFull","full");setI("#shx","x");setI("#hpx","x");setI("#wbx","x");
+setI("#prevS","right","السابق");$("#nextS").innerHTML=`<span class="lbl">التالي</span>`+ic("left");
+setI("#fabMem","cpu","مفاهيم الذاكرة");setI("#nextBtn","flag","المسألة الجاية");
+$("#plink").href=PROB_URL;setI("#plink","ext","افتحوا المسألة");$("#startDeck").innerHTML="يلا نبدأ "+ic("left");
+$("#thinkFirst").innerHTML=ic("hand")+"اقرأوها وفكّروا لوحدكم الأول";
+$("#nextLink").href=NEXT_URL;setI("#nextLink","ext","افتحوا المسألة على Codeforces");
+$("#searchBox").insertAdjacentHTML("afterbegin",ic("search"));
+setI("#psNext","down","السطر الجاي");setI("#psAll","eye","الكل");setI("#psReset","restart","");
+$("#ideasH").innerHTML=ic("bulb")+"الخطوات";setI("#bHelp","bulb","ساعدني");setI("#bAuto","spark","ارسمها");setI("#bReset","restart","");
+
+setI("#bStart","play","شغّل");setI("#bPrev","right");setI("#bNext","left");setI("#bPlay","play","تشغيل تلقائي");
+$("#inH").innerHTML=ic("inp")+"الإدخال";$("#flowH").innerHTML=ic("flow")+"الفلوتشارت";$("#memH").innerHTML=ic("cpu")+"الذاكرة";$("#outH").innerHTML=ic("term")+"الإخراج";
+setI("#tAll","flask","اختبروا كل الحالات");setI("#tOne","play","جرّبوا");
+$("#sInH").innerHTML=ic("inp")+"Input";$("#sExH").innerHTML=ic("cpu")+"التنفيذ";$("#sOutH").innerHTML=ic("outp")+"Output";
+setI("#seeBug","eye","شوفوها خطوة بخطوة");setI("#testBug","flask","اختبروا النسخة دي");
+setI("#ctaNext","flag","افتحوا التلميحة");$("#wbTitle").innerHTML=ic("board")+"السبورة";
+$("#castCover").innerHTML=`<div class="who"><div class="float">${kid({...MEMO,num:"a",w:170})}</div><b style="color:var(--pk)">ميمو</b></div><div class="who">${gem(120)}<b style="color:var(--am)">k</b></div><div class="who"><div class="float d2">${kid({...MOMO,num:"b",w:170,tilt:4})}</div><b style="color:var(--bl)">مومو</b></div>`;
+$("#castEnd").innerHTML=`<div class="float">${kid({...MEMO,w:120})}</div>${gem(80)}<div class="float d2">${kid({...MOMO,w:120})}</div>`;
+
+/* ============ micro-slides: one idea per screen ============ */
+const VM={memo_num:{ar:"رقم ميمو",c:"#db2777",t:"int",addr:0,old:"a"},momo_num:{ar:"رقم مومو",c:"#2563eb",t:"int",addr:8,old:"b"},k:{ar:"الرقم السحري",c:"#d97706",t:"int",addr:16,old:"k"},memo_ok:{ar:"ميمو بيقبل القسمة؟",c:"#7c3aed",t:"bool",addr:24,old:"—"},momo_ok:{ar:"مومو بيقبل القسمة؟",c:"#0891b2",t:"bool",addr:25,old:"—"}};
+const st=(ok,who)=>`<span class="st ${ok?"y":"n"}">${ic(ok?"check":"x")}${who}</span>`;
+const BIDEA=["var(--gr)","var(--gr2)"],BANA=["var(--bl)","var(--bl2)"];
+const one=(id,ch,badge,bc,vis,title,cap)=>`<section class="slide" id="${id}" data-ch="${ch}"><div class="sl one"><span class="badge" style="--c:${bc[0]};--c2:${bc[1]}">${badge}</span><div class="vis">${vis}</div><h1>${title}</h1>${cap?`<p class="cap">${cap}</p>`:""}</div></section>`;
+const AR=s=>ic("right",s||"width:46px;height:46px");
+const ruleVis=(a,b,res,col)=>`<div class="rv"><div class="who">${kid({...MEMO,num:"a",w:150})}${st(a,a?"بيقبل":"مش بيقبل")}</div><div class="who">${kid({...MOMO,num:"b",w:150,tilt:4})}${st(b,b?"بيقبل":"مش بيقبل")}</div><span class="arrow">${AR()}</span><span class="bigres" style="background:${col}">${res}</span></div>`;
+const exVis=(i,o,cls="")=>`<div class="exbig ${cls}"><span class="i">${i}</span><span class="arrow">${AR()}</span><span class="o">${o}</span></div>`;
+const mchk=(t,ok)=>`<span class="cmp ${ok?"t":"f"} big">${ic(ok?"check":"x")}${t}</span>`;
+const MS=[
+ one("s-story1",0,"الحكاية · 1",BIDEA,`<div class="duo2"><span class="bubble2">يلا نلعب!</span><div class="float">${kid({...MEMO,w:200})}</div><div class="float d2">${kid({...MOMO,w:200})}</div></div>`,
+  "ميمو ومومو زهقانين","فقرروا يلعبوا لعبة."),
+ one("s-story2",0,"الحكاية · 2",BIDEA,`<div class="float">${kid({...MEMO,num:"a",w:220})}</div>`,
+  `ميمو بيختار رقم <code class="pk">a</code>`,`أي ${cw("int","رقم موجب")}`),
+ one("s-story3",0,"الحكاية · 3",BIDEA,`<div class="float d2">${kid({...MOMO,num:"b",w:220,tilt:4})}</div>`,
+  `ومومو بيختار رقم <code class="bl">b</code>`,`${cw("int","رقم موجب")} هو كمان`),
+ one("s-story4",0,"الحكاية · 4",BIDEA,gem(170),
+  `وفيه رقم سحري <code class="am">k</code>`,"هو اللي بيحكم بينهم"),
+ one("s-story5",0,"الحكاية · 5",BIDEA,`<div class="qcard big"><code>a % k == 0 ?</code><div class="yn"><span class="st y">${ic("check")}أيوه</span><span class="st n">${ic("x")}لأ</span></div></div>${bags(15,3)}`,
+  `السؤال: ${cw("mod","بيقبل القسمة")}؟`,"يعني يتقسم على k من غير ما يفضل باقي"),
+ one("s-rule1",0,"القاعدة 1",BIDEA,ruleVis(1,1,"Both","#16a34a"),`${cw("and","الاتنين")} بيقبلوا القسمة`,"الاتنين كسبوا"),
+ one("s-rule2",0,"القاعدة 2",BIDEA,ruleVis(1,0,"Memo","#db2777"),"رقم ميمو بس","ميمو كسب"),
+ one("s-rule3",0,"القاعدة 3",BIDEA,ruleVis(0,1,"Momo","#2563eb"),"رقم مومو بس","مومو كسب"),
+ one("s-rule4",0,"القاعدة 4",BIDEA,ruleVis(0,0,"No One","#64748b"),"ولا واحد فيهم","محدش كسب"),
+ one("s-in",0,"Input",["var(--am)","var(--am2)"],`<div class="inbig"><span class="ln1">${ic("inp","width:40px;height:40px")}</span>${[["a","ميمو","#db2777",15],["b","مومو","#2563eb",7],["k","السحري","#d97706",3]].map(x=>`<div class="cellv" style="--c:${x[2]}"><small>${x[0]} · ${x[1]}</small><b>${x[3]}</b></div>`).join("")}</div>`,
+  `الـ Input: ${cw("input","سطر واحد")} فيه 3 أرقام`,`<code>1 ≤ a, b, k ≤ 10¹⁸</code> ${cw("big","أرقام عملاقة")}`),
+ one("s-out",0,"Output",["var(--gr)","var(--gr2)"],`<div class="scr">${["Both","Memo","Momo","No One"].map((w,i)=>`<span style="animation-delay:${i}s">${w}</span>`).join("")}</div>`,
+  `الـ Output: ${cw("print","كلمة واحدة")} بس`,"بنفس الحروف بالظبط، حتى المسافة في <code>No One</code>"),
+ one("s-ex1",0,"مثال 1",BIDEA,`<div class="exwrap">${exVis("15 7 3","Memo")}<div class="why">${mchk("15 % 3 = 0",1)}${mchk("7 % 3 = 1",0)}</div></div>`,
+  "ميمو بس اللي بيقبل القسمة",""),
+ one("s-ex2",0,"مثال 2",BIDEA,`<div class="exwrap">${exVis("22 10 2","Both")}<div class="why">${mchk("22 % 2 = 0",1)}${mchk("10 % 2 = 0",1)}</div></div>`,
+  "الاتنين بيقبلوا القسمة",""),
+ one("s-ana1",1,"Analysis",BANA,`<div class="qbig"><div><small>${ic("gear")}سؤال 1</small>هل <code class="pk">a</code> بيقبل القسمة على <code class="am">k</code>؟</div><div><small>${ic("gear")}سؤال 2</small>هل <code class="bl">b</code> بيقبل القسمة على <code class="am">k</code>؟</div></div>`,
+  "سؤالين بس","وإجابتهم بتحدد الكسبان"),
+ one("s-ana2",1,"Analysis",BANA,`<div class="chipline big">${[["input","input().split()"],["int","map(int)"],["var","متغيرات"],["mod","%"],["eq","=="],["bool","True / False"],["and","and"],["if","if / elif / else"],["print","print"]].map(t=>cw(t[0],t[1])).join("")}</div>`,
+  "الأدوات اللي هنستخدمها","دوسوا على أي أداة علشان تفتكروها"),
+ one("s-trap1",1,"خلّوا بالكم · 1",["var(--rd)","var(--rd2)"],`<div class="exwrap">${exVis("22 10 2","Memo","bad")}<div class="why">${mchk("الصح: Both",1)}</div></div>`,
+  "ترتيب الأسئلة",`اسألوا عن ${cw("and","الاتنين")} الأول`),
+ one("s-trap2",1,"خلّوا بالكم · 2",["var(--am)","var(--am2)"],`<div class="ribbon big">1,000,000,000,000,000,000</div>`,
+  "أرقام عملاقة",`لحد ${cw("big","10¹⁸")}: بايثون تمام، و C++ عايزة <code>long long</code>`),
+ one("s-trap3",1,"خلّوا بالكم · 3",BANA,`<div class="exwrap">${exVis("1 1 1","Both")}${exVis("3 5 10","No One")}</div>`,
+  "حالات طرفية","k = 1 دايماً Both · ولو الرقم أصغر من k يبقى لأ"),
+ one("s-names",1,"Analysis",BANA,`<div class="namesbig">${Object.entries(VM).map(([n,m],i)=>`<div class="vrow" style="animation-delay:${i*.08}s"><span class="old">${m.old}</span><span class="arrow">${ic("right")}</span><span class="new" style="color:${m.c}">${n}</span><small>${m.ar}</small></div>`).join("")}</div>`,
+  "نسمّي الصناديق","اسم واضح = كود مفهوم"),
+ one("s-rules-n",1,"Analysis",BANA,`<div class="card nametab big">${RULES}</div>`,"قواعد التسمية","")
+].join("");
+$("#micro").outerHTML=MS;
+$("#namePop").innerHTML=RULES;
+
+/* ============ pseudocode ============ */
+const PS=[["#16a34a","<k>START</k>","نبدأ"],["#d97706","<k>READ</k> memo_num, momo_num, k","نقرا الأرقام"],
+ ["#7c3aed","memo_ok ← (memo_num <k>MOD</k> k = 0)","ميمو بيقبل القسمة؟"],["#7c3aed","momo_ok ← (momo_num <k>MOD</k> k = 0)","مومو بيقبل القسمة؟"],
+ ["#2563eb","<k>IF</k> memo_ok <k>AND</k> momo_ok <k>THEN</k>","الاتنين؟"],["#d97706","    <k>PRINT</k> \"Both\"",""],
+ ["#2563eb","<k>ELSE IF</k> memo_ok <k>THEN</k>","ميمو بس؟"],["#d97706","    <k>PRINT</k> \"Memo\"",""],
+ ["#2563eb","<k>ELSE IF</k> momo_ok <k>THEN</k>","مومو بس؟"],["#d97706","    <k>PRINT</k> \"Momo\"",""],
+ ["#2563eb","<k>ELSE</k>","ولا واحد"],["#d97706","    <k>PRINT</k> \"No One\"",""],["#2563eb","<k>END IF</k>",""],["#16a34a","<k>END</k>","نخلّص"]];
+let psN=0;
+$("#psd").innerHTML=PS.map((p,i)=>`<div class="pr hid" style="--c:${p[0]}"><i>${i+1}</i><span>${p[1]}</span><em>${p[2]}</em></div>`).join("");
+function psShow(n){psN=n;$$("#psd .pr").forEach((r,i)=>{r.classList.toggle("hid",i>=n);r.classList.toggle("cur",i===n-1);});$("#psNext").disabled=n>=PS.length;}
+$("#psNext").onclick=()=>psShow(psN+1);$("#psAll").onclick=()=>psShow(PS.length);$("#psReset").onclick=()=>psShow(0);
+
+/* ============ program + simulator ============ */
+const VERS={
+ good:{br:[{cond:["memo_ok","momo_ok"],say:"Both"},{cond:["memo_ok"],say:"Memo"},{cond:["momo_ok"],say:"Momo"},{cond:null,say:"No One"}]},
+ bug:{br:[{cond:["memo_ok"],say:"Memo"},{cond:["momo_ok"],say:"Momo"},{cond:["memo_ok","momo_ok"],say:"Both"},{cond:null,say:"No One"}]}};
+function codeLines(ver){const L=["# بداية البرنامج","memo_num, momo_num, k = map(int, input().split())","memo_ok = memo_num % k == 0","momo_ok = momo_num % k == 0"];
+ VERS[ver].br.forEach((b,j)=>{L.push(b.cond?`${j?"elif":"if"} ${b.cond.join(" and ")}:`:"else:");L.push(`    print("${b.say}")`);});L.push("# نهاية البرنامج");return L;}
+const ref=(a,b,k)=>{const x=a%k===0n,y=b%k===0n;return x&&y?"Both":x?"Memo":y?"Momo":"No One";};
+function parseIn(s){const p=String(s).trim().split(/\s+/);if(p.length!==3||!p.every(t=>/^\d{1,19}$/.test(t)))return null;const v=p.map(BigInt);if(v.some(x=>x<1n||x>10n**18n))return null;return v;}
+const WIN={Both:"الاتنين كسبوا",Memo:"ميمو كسب",Momo:"مومو كسب","No One":"محدش كسب"};
+const bc=v=>v?`<span class="cmp t">${ic("check")}True</span>`:`<span class="cmp f">${ic("x")}False</span>`;
+const nt=(t,c)=>`<span class="nt" style="--c:${c}">${t}</span>`;
+function simulate(ver,a,b,k){
+ const B=VERS[ver].br,steps=[],LS={},NS={},ES={},V={},OUT=[];let pl=null,pn=null;
+ const st=o=>{if(pl!==null&&LS[pl]==="cur")LS[pl]="done";if(pn&&NS[pn]==="cur")NS[pn]="done";
+  if(o.line!=null){LS[o.line]="cur";pl=o.line;}if(o.node){NS[o.node]="cur";pn=o.node;}else pn=null;
+  (o.on||[]).forEach(e=>ES[e]="on");if(o.set)Object.assign(V,o.set);if(o.out)OUT.push(o.out);
+  steps.push({...o,LS:{...LS},NS:{...NS},ES:{...ES},V:{...V},OUT:[...OUT]});};
+ const q=j=>4+2*j,p=j=>5+2*j,END=12;
+ st({line:0,node:"start",say:`${nt("بداية","#16a34a")} الكمبيوتر بيقرا سطر سطر من فوق لتحت.`});
+ st({line:1,node:"in",on:["e1"],set:{memo_num:a,momo_num:b,k},fresh:["memo_num","momo_num","k"],kind:"read",
+  say:`${nt("قراءة","#d97706")} الـ Input <code>${a} ${b} ${k}</code> دخل الكود، و${cw("input","اتقسم")} على 3 ${cw("var","صناديق")} في الذاكرة.`});
+ const r1=a%k,r2=b%k;
+ st({line:2,node:"p1",on:["e2"],set:{memo_ok:r1===0n},fresh:["memo_ok"],uses:["memo_num","k"],say:`${nt("حساب","#7c3aed")} <code>${a} % ${k}</code> = <b>${r1}</b> ${cw("mod","باقي")} · <code>${r1} == 0</code> ${bc(r1===0n)} في <code>memo_ok</code>`});
+ st({line:3,node:"p2",on:["e3"],set:{momo_ok:r2===0n},fresh:["momo_ok"],uses:["momo_num","k"],say:`${nt("حساب","#7c3aed")} <code>${b} % ${k}</code> = <b>${r2}</b> · <code>${r2} == 0</code> ${bc(r2===0n)} في <code>momo_ok</code>`});
+ let endE="m4";
+ for(let j=0;j<4;j++){const br=B[j];
+  if(br.cond){const res=br.cond.every(n=>V[n]);
+   const chips=br.cond.map(n=>`<span class="cmp ${V[n]?"t":"f"}">${n} = ${V[n]?"True":"False"}</span>`).join(br.cond.length>1?` ${cw("and","and")} `:"");
+   const msg=`${nt(j?"elif":"if","#2563eb")} ${chips} ${ic("left")} ${res?`<b class="ok">اتحقق: ندخل</b>`:`<b class="no">ما اتحققش: اللي بعده</b>`}`;
+   if(!res){LS[p(j)]="skip";NS["o"+(j+1)]="skip";ES["y"+(j+1)]="off";ES["m"+(j+1)]="off";}
+   st({line:q(j),node:"d"+(j+1),on:[j?"n"+j:"e4"],uses:br.cond,say:msg});
+   if(res){for(let t=j+1;t<4;t++){LS[q(t)]="skip";LS[p(t)]="skip";if(t<3)NS["d"+(t+1)]="skip";NS["o"+(t+1)]="skip";if(t<3)ES["y"+(t+1)]="off";ES["m"+(t+1)]="off";ES["n"+t]="off";}
+    st({line:p(j),node:"o"+(j+1),on:["y"+(j+1)],out:br.say,say:`${nt("طباعة","#16a34a")} ${cw("print","print")} بتطلّع <b>${br.say}</b> على الإخراج: ${WIN[br.say]}.`});
+    endE="m"+(j+1);break;}
+  }else{st({line:q(j),node:null,on:["n3"],say:`${nt("else","#db2777")} ولا شرط اتحقق، ندخل هنا على طول.`});
+   st({line:p(j),node:"o4",out:br.say,say:`${nt("طباعة","#16a34a")} ${cw("print","print")} بتطلّع <b>${br.say}</b>: ${WIN[br.say]}.`});endE="m4";}
+ }
+ const got=OUT[0],exp=ref(a,b,k);
+ st({line:END,node:"end",on:[endE],last:true,say:`${nt("النهاية","#16a34a")} `+(got===exp?`<b class="ok">${ic("check")} الإجابة صح.</b>`:`<b class="no">${ic("bug")} الصح ${exp} مش ${got}.</b>`)+` فكّروا في المسألة الجاية.`});
+ return steps;}
+const runOut=(ver,v)=>{const s=simulate(ver,...v);return s[s.length-1].OUT[0]||"—";};
+
+/* ============ standard flowchart (SVG) ============ */
+function buildFC(ver,p=""){const B=VERS[ver].br,id=p?p+"fc":"fc";
+ const E=(n,d)=>`<path class="ed" id="${p}e-${n}" d="${d}"${p?` pathLength="1" marker-end="url(#${p}mb)"`:""}/>`;
+ const D=(n,cy,c)=>`<g class="nd" id="${p}n-${n}" style="--k:#2563eb"><polygon class="sh" points="150,${cy-50} 272,${cy} 150,${cy+50} 28,${cy}"/><text class="m" x="150" y="${cy}" dy=".35em" text-anchor="middle">${c.join(" and ")} ?</text></g><g class="lb" id="${p}L-${n}"><text class="lbl y" x="292" y="${cy-9}" text-anchor="middle">نعم</text><text class="lbl n" x="168" y="${cy+66}" text-anchor="middle">لا</text></g>`;
+ const O=(n,cx,cy,t)=>`<g class="nd" id="${p}n-${n}" style="--k:#d97706"><polygon class="sh" points="${cx-46},${cy-24} ${cx+64},${cy-24} ${cx+46},${cy+24} ${cx-64},${cy+24}"/><text x="${cx}" y="${cy}" dy=".35em" text-anchor="middle" direction="rtl">اطبع <tspan class="m">${t}</tspan></text></g>`;
+ return `<svg id="${id}" class="fc" viewBox="0 0 456 800" role="img" aria-label="فلوتشارت الحل">
+<defs><marker id="${p}ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#b9c3d6"/></marker><marker id="${p}mb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="${p?6:5}" markerHeight="${p?6:5}" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2a56"/></marker></defs>
+${E("m1","M432 354H448V770H215")}${E("m2","M432 478H448V770H215")}${E("m3","M432 602H448V770H215")}
+${E("e1","M150 56V78")}${E("e2","M150 136V160")}${E("e3","M150 208V232")}${E("e4","M150 280V302")}
+${E("y1","M272 354H312")}${E("n1","M150 404V426")}${E("y2","M272 478H312")}${E("n2","M150 528V550")}${E("y3","M272 602H312")}${E("n3","M150 652V675")}${E("m4","M150 725V746")}
+<g class="nd" id="${p}n-start" style="--k:#16a34a"><ellipse class="sh" cx="150" cy="34" rx="64" ry="22"/><text x="150" y="34" dy=".35em" text-anchor="middle">ابدأ</text></g>
+<g class="nd" id="${p}n-in" style="--k:#d97706"><polygon class="sh" points="54,80 274,80 248,136 28,136"/><text x="150" y="99" dy=".35em" text-anchor="middle" direction="rtl">اقرأ 3 أرقام</text><text class="m" x="150" y="120" dy=".35em" text-anchor="middle">memo_num, momo_num, k</text></g>
+<g class="nd" id="${p}n-p1" style="--k:#7c3aed"><rect class="sh" x="20" y="162" width="260" height="46"/><text class="m" x="150" y="185" dy=".35em" text-anchor="middle">memo_ok = memo_num % k == 0</text></g>
+<g class="nd" id="${p}n-p2" style="--k:#7c3aed"><rect class="sh" x="20" y="234" width="260" height="46"/><text class="m" x="150" y="257" dy=".35em" text-anchor="middle">momo_ok = momo_num % k == 0</text></g>
+${D("d1",354,B[0].cond)}${O("o1",378,354,B[0].say)}${D("d2",478,B[1].cond)}${O("o2",378,478,B[1].say)}${D("d3",602,B[2].cond)}${O("o3",378,602,B[2].say)}${O("o4",150,701,B[3].say)}
+<g class="nd" id="${p}n-end" style="--k:#16a34a"><ellipse class="sh" cx="150" cy="770" rx="64" ry="22"/><text x="150" y="770" dy=".35em" text-anchor="middle">النهاية</text></g>
+</svg>`;}
+
+/* ============ build flowchart (Design) ============ */
+const STEPS=[
+ {f:"اللعبة بتبدأ",t:"term",nodes:["start"],edges:[]},
+ {f:`ميمو ومومو بيختاروا ${cw("int","أرقامهم")}، ومعانا k`,t:"io",nodes:["in"],edges:["e1"]},
+ {f:`رقم ميمو ${cw("mod","بيقبل القسمة")} على k؟ نحسبها`,t:"proc",nodes:["p1"],edges:["e2"]},
+ {f:"رقم مومو بيقبل القسمة على k؟ نحسبها",t:"proc",nodes:["p2"],edges:["e3"]},
+ {f:`${cw("and","الاتنين")} بيقبلوا؟ يبقى Both`,t:"dec",nodes:["d1","o1"],edges:["e4","y1"]},
+ {f:"ميمو بس؟ يبقى Memo",t:"dec",nodes:["d2","o2"],edges:["n1","y2"]},
+ {f:"مومو بس؟ يبقى Momo",t:"dec",nodes:["d3","o3"],edges:["n2","y3"]},
+ {f:"ولا واحد؟ يبقى No One",t:"io",nodes:["o4"],edges:["n3"]},
+ {f:"اللعبة خلصت",t:"term",nodes:["end"],edges:["m1","m2","m3","m4"]}];
+const SG={term:'<ellipse cx="19" cy="12" rx="16" ry="8"/>',io:'<polygon points="9,4 35,4 29,20 3,20"/>',proc:'<rect x="4" y="4" width="30" height="16"/>',dec:'<polygon points="19,2 36,12 19,22 2,12"/>'};
+const SGC={term:"#16a34a",io:"#d97706",proc:"#7c3aed",dec:"#2563eb"};
+const IORDER=[4,1,7,2,8,0,5,3,6];
+let need=0,bBusy=false;
+function renderBuild(){need=0;
+ $("#fcBBox").innerHTML=LEGEND+buildFC("good","b");
+ $$("#bfc .nd").forEach(n=>n.dataset.st="done");
+ $("#ideaList").innerHTML=IORDER.map(i=>{const s=STEPS[i];return `<div class="idea" role="button" tabindex="0" data-i="${i}"><svg class="sg" viewBox="0 0 38 24" style="--k:${SGC[s.t]}">${SG[s.t]}</svg><span>${s.f}</span><span class="num"></span></div>`;}).join("");
+ $("#bDone").hidden=true;upB();}
+function upB(){$("#bProg").style.width=need/STEPS.length*100+"%";}
+function whyNot(i,n){
+ if(n===4&&(i===5||i===6))return "لو سألنا عن واحد بس الأول والاتنين بيقبلوا، هيطبع اسمه والصح <b>Both</b>. الأقوى الأول.";
+ if(n===5&&i===6)return "ميمو الأول، وبعدين مومو.";
+ if(n===0)return "أي فلوتشارت بيبدأ بـ «ابدأ».";
+ if(n===1)return "لسه ما قريناش الأرقام.";
+ if(i===7)return "«غير كده» دايماً آخر سؤال.";
+ if(i===8)return "النهاية في الآخر خالص.";
+ if((n===2||n===3)&&i>=4)return "لازم نحسب السؤالين الأول.";
+ return "مش دي الخطوة اللي بعدها.";}
+async function place(btn){if(bBusy)return;const i=+btn.dataset.i;if(btn.classList.contains("used"))return;
+ if(i!==need){btn.classList.remove("shake");void btn.offsetWidth;btn.classList.add("shake");toast(whyNot(i,need));return;}
+ bBusy=true;$$(".idea").forEach(x=>x.classList.remove("glow"));btn.classList.add("used");btn.querySelector(".num").innerHTML=ic("check");need++;upB();
+ const S=STEPS[i];$$("#bfc .nd.hot").forEach(n=>n.classList.remove("hot"));
+ for(const e of S.edges){const el=$("#be-"+e);if(el)el.classList.add("in");}
+ await sleep(RM?0:380);
+ for(const n of S.nodes){$("#bn-"+n).classList.add("in","hot");const l=$("#bL-"+n);if(l)l.classList.add("in");await sleep(RM?0:180);}
+ if(need===STEPS.length){$("#bDone").hidden=false;$("#bDone").innerHTML=`<span>${ic("check")} الفلوتشارت كامل</span><button class="btn sm p" id="toCode">${ic("play")}نشغّله</button>`;$("#toCode").onclick=()=>goSlide(IDX["s-ide"]);}
+ bBusy=false;}
+$("#ideaList").addEventListener("click",e=>{if(e.target.closest(".cw"))return;const b=e.target.closest(".idea");if(b)place(b);});
+$("#ideaList").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const b=e.target.closest(".idea");if(b){e.preventDefault();e.stopPropagation();place(b);}}});
+$("#bHelp").onclick=()=>{const c=$(`.idea[data-i="${need}"]`);if(c)c.classList.add("glow");};
+$("#bAuto").onclick=async()=>{while(need<STEPS.length){while(bBusy)await sleep(60);const c=$(`.idea[data-i="${need}"]`);if(!c)break;await place(c);await sleep(220);}};
+$("#bReset").onclick=()=>{if(!bBusy)renderBuild();};
+renderBuild();
+
+/* ============ highlighter ============ */
+const KC=new Set(["if","elif","else","for","while","return","in","def","import","from"]),KW=new Set(["and","or","not","True","False","None","is"]),BI=new Set(["print","input","int","map","str","len","range","float","list","dict"]);
+function hl(src){return src.replace(/(#.*$)|("[^"]*"|'[^']*')|(\b\d+\b)|([A-Za-z_]\w*)|(\s+)|([^\sA-Za-z_\d"'#]+)/g,(m,c,s,n,id,ws,o,off)=>{
+ if(c)return `<span class="t-com">${esc(c)}</span>`;if(s)return `<span class="t-str">${esc(s)}</span>`;if(n)return `<span class="t-num">${n}</span>`;
+ if(id){if(KC.has(id))return `<span class="t-ctl">${id}</span>`;if(KW.has(id))return `<span class="t-kw">${id}</span>`;if(BI.has(id)||src[off-1]===".")return `<span class="t-fn">${id}</span>`;return `<span class="t-var">${id}</span>`;}
+ if(ws)return ws;return `<span class="t-op">${esc(o)}</span>`;});}
+const hlBlock=code=>code.split("\n").map(hl).join("\n");
+
+/* ============ memory (generic: any variables) ============ */
+const BASE=0x7FA0;
+const PAL=["#db2777","#2563eb","#d97706","#7c3aed","#0891b2","#16a34a","#e11d48","#475569"];
+const TAR={int:"رقم صحيح",bool:"صح ولا غلط",str:"نص",float:"رقم بكسور",list:"ليست",tuple:"tuple",dict:"قاموس",set:"set"};
+let ALLOC={},AORDER=[],byteEls=[],rowEls=[];
+const vcol=n=>VM[n]?VM[n].c:PAL[Math.max(0,AORDER.indexOf(n))%PAL.length];
+const valTxt=x=>!x?"?":x.t==="str"?`"${x.v}"`:x.v;
+function sizeOf(x){if(!x)return 8;if(x.t==="bool")return 1;if(x.t==="int"){let b;try{b=BigInt(x.v);}catch(e){return 8;}if(b<0n)b=-b;return b.toString(2).length<64?8:16;}if(x.t==="str")return Math.min(Math.max(x.v.length,1),16);return 8;}
+function bitsOf(x,sz){let bits="";
+ if(x.t==="int"){try{bits=BigInt.asUintN(sz*8,BigInt(x.v)).toString(2).padStart(sz*8,"0");}catch(e){bits="0".repeat(sz*8);}}
+ else if(x.t==="bool")bits="0".repeat(sz*8-1)+(x.v==="True"?"1":"0");
+ else if(x.t==="float"){const dv=new DataView(new ArrayBuffer(8));dv.setFloat64(0,parseFloat(x.v));for(let i=0;i<8;i++)bits+=dv.getUint8(i).toString(2).padStart(8,"0");bits=bits.slice(0,sz*8).padEnd(sz*8,"0");}
+ else if(x.t==="str"){for(let i=0;i<sz;i++)bits+=((x.v.charCodeAt(i)||0)&255).toString(2).padStart(8,"0");}
+ else bits="0".repeat(sz*8);
+ return bits;}
+function buildMX(rows){let h="";for(let r=0;r<rows;r++){h+=`<div class="mrow"><span class="ad">0x${(BASE+r*8).toString(16).toUpperCase()}</span>`;
+ for(let b=0;b<8;b++)h+=`<div class="byte"><div class="nib">${"<i class='bit'></i>".repeat(4)}</div><div class="nib">${"<i class='bit'></i>".repeat(4)}</div></div>`;
+ h+=`<span class="tg"></span></div>`;}$("#mx").innerHTML=h;byteEls=$$("#mx .byte");rowEls=$$("#mx .mrow");}
+function allocate(steps){const last={};AORDER=[];steps.forEach(s=>Object.entries(s.V||{}).forEach(([n,x])=>{if(!(n in last))AORDER.push(n);last[n]=x;}));
+ ALLOC={};let a=0;AORDER.forEach(n=>{const sz=sizeOf(last[n]);if(sz>=8&&a%8)a+=8-a%8;ALLOC[n]={addr:a,sz};a+=sz;});buildMX(Math.max(4,Math.ceil(a/8)));}
+function paintMem(V,fresh=[]){
+ byteEls.forEach(el=>{el.className="byte";el.style.removeProperty("--vc");el.style.animationDelay="";el.title="فاضي";el.querySelectorAll(".bit").forEach(b=>b.classList.remove("one"));});
+ rowEls.forEach(r=>{r.classList.remove("used");r.querySelector(".tg").innerHTML="";});
+ for(const n of AORDER){const x=V[n],A=ALLOC[n];if(!x||!A)continue;const bits=bitsOf(x,A.sz),c=vcol(n);
+  for(let i=0;i<A.sz;i++){const el=byteEls[A.addr+i];if(!el)break;const s=bits.slice(i*8,i*8+8);el.classList.add("used");el.style.setProperty("--vc",c);el.title=`${n} · byte ${i} = ${s}`;
+   el.querySelectorAll(".bit").forEach((b,z)=>{if(s[z]==="1")b.classList.add("one");});
+   if(fresh.includes(n)){el.classList.add("wave");el.style.animationDelay=i*60+"ms";}}
+  const row=rowEls[Math.floor(A.addr/8)];if(row){row.classList.add("used");row.querySelector(".tg").insertAdjacentHTML("beforeend",`<div style="color:${c}">${n}</div>`);}}}
+function renderCards(V,fresh=[],reads=[]){
+ $("#vcards").innerHTML=AORDER.map(n=>{const x=V[n],has=!!x,c=vcol(n),t=x?x.t:(VM[n]?VM[n].t:"");let val=has?valTxt(x):"?",cl="";
+  if(has){if(t==="bool")cl=x.v==="True"?"T":"F";else if(val.length>9)cl="long";}
+  const lab=VM[n]?VM[n].ar:(TAR[t]||"متغير");
+  return `<div class="vcard ${has?"":"empty"} ${has&&fresh.includes(n)?"fresh":""} ${reads.includes(n)?"read":""}" id="vc-${n}" style="--c:${c}"><em>${t}</em><small>${lab}</small><b class="${cl}">${esc(val)}</b><code>${n}</code></div>`;}).join("")
+  ||`<div class="memempty">${ic("box")}الذاكرة فاضية. شغّلوا الكود.</div>`;}
+
+/* ============ beams: animated data-journey arrows ============ */
+const beamSvg=$("#beams"),beamDefs=$("#beamDefs"),SVGNS="http://www.w3.org/2000/svg";
+const vis=el=>{if(!el)return false;const r=el.getBoundingClientRect();return r.width>0&&r.height>0;};
+function marker(c){const id="bm"+c.replace("#","");if(!document.getElementById(id))beamDefs.insertAdjacentHTML("beforeend",`<marker id="${id}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`);return id;}
+function clearBeams(){beamSvg.querySelectorAll("path.bm").forEach(p=>p.remove());$$(".pkt").forEach(p=>p.remove());}
+function beam(from,to,o={}){if(!vis(from)||!vis(to))return Promise.resolve();
+ const a=from.getBoundingClientRect(),b=to.getBoundingClientRect(),c=o.color||"#1d2a56",dur=(o.dur||800)*(o.k||1);
+ const ax=a.left+a.width/2,ay=a.top+a.height/2,bx=b.left+b.width/2,by=b.top+b.height/2;let d;
+ if(Math.abs(bx-ax)>=Math.abs(by-ay)*.8){const s=Math.sign(bx-ax)||1,x0=s>0?a.right+4:a.left-4,x1=s>0?b.left-6:b.right+6,m=(x1-x0)*.5;d=`M${x0} ${ay}C${x0+m} ${ay} ${x1-m} ${by} ${x1} ${by}`;}
+ else{const s=Math.sign(by-ay)||1,y0=s>0?a.bottom+4:a.top-4,y1=s>0?b.top-6:b.bottom+6,m=(y1-y0)*.5;d=`M${ax} ${y0}C${ax} ${y0+m} ${bx} ${y1-m} ${bx} ${y1}`;}
+ const p=document.createElementNS(SVGNS,"path");p.setAttribute("d",d);p.setAttribute("class","bm");p.setAttribute("stroke",c);p.setAttribute("marker-end",`url(#${marker(c)})`);beamSvg.appendChild(p);
+ const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;
+ if(RM){p.style.strokeDashoffset=0;return Promise.resolve();}
+ const pk=document.createElement("div");pk.className="pkt"+(o.label?"":" dot");pk.style.background=c;if(o.label)pk.textContent=o.label;document.body.appendChild(pk);
+ return new Promise(res=>{const t0=performance.now();
+  const f=now=>{const t=Math.min(1,(now-t0)/dur),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;p.style.strokeDashoffset=L*(1-e);const pt=p.getPointAtLength(L*e);pk.style.left=pt.x+"px";pk.style.top=pt.y+"px";
+   if(t<1)requestAnimationFrame(f);else{setTimeout(()=>pk.remove(),o.keep||250);if(o.fade!==false)setTimeout(()=>p.classList.add("fade"),300);res();}};
+  requestAnimationFrame(f);});}
+addEventListener("resize",clearBeams);
+
+/* ============ Python in the browser (Pyodide) ============ */
+const PYSRC=`
+import sys, io, builtins, json
+def _val(v):
+    if isinstance(v, bool): return {"t": "bool", "v": "True" if v else "False"}
+    if isinstance(v, int): return {"t": "int", "v": str(v)}
+    if isinstance(v, float): return {"t": "float", "v": repr(v)}
+    if isinstance(v, str): return {"t": "str", "v": v[:40]}
+    if isinstance(v, (list, tuple, dict, set)): return {"t": type(v).__name__, "v": repr(v)[:40]}
+    return None
+class _Stop(Exception): pass
+def trace_run(code, inp):
+    feed = inp.split(chr(10))
+    out = io.StringIO()
+    ev = []
+    def fake(p=""):
+        if not feed: raise EOFError("مفيش Input تاني")
+        return feed.pop(0)
+    def snap(f):
+        d = {}
+        for k, v in list(f.f_locals.items()):
+            if k.startswith("_"): continue
+            x = _val(v)
+            if x is not None: d[k] = x
+        return d
+    def tr(frame, event, arg):
+        if frame.f_code.co_filename != "<user>": return None
+        if event == "line":
+            if len(ev) > 1500: raise _Stop("البرنامج طوّل أوي، يمكن فيه لوب مش بيخلص")
+            ev.append({"line": frame.f_lineno, "vars": snap(frame), "out": out.getvalue()})
+        elif event == "return" and frame.f_code.co_name == "<module>":
+            ev.append({"line": 0, "vars": snap(frame), "out": out.getvalue()})
+        return tr
+    try:
+        comp = compile(code, "<user>", "exec")
+    except SyntaxError as e:
+        return json.dumps({"err": "SyntaxError: %s (سطر %s)" % (e.msg, e.lineno), "errLine": e.lineno or 0, "events": [], "out": ""})
+    old = (sys.stdout, builtins.input)
+    sys.stdout = out
+    builtins.input = fake
+    err = ""
+    eline = 0
+    sys.settrace(tr)
+    try:
+        exec(comp, {"__name__": "__main__"})
+    except BaseException as e:
+        err = "%s: %s" % (type(e).__name__, e)
+        tb = e.__traceback__
+        while tb:
+            if tb.tb_frame.f_code.co_filename == "<user>": eline = tb.tb_lineno
+            tb = tb.tb_next
+    finally:
+        sys.settrace(None)
+        sys.stdout, builtins.input = old
+    if not ev or ev[-1]["line"] != 0:
+        ev.append({"line": 0, "vars": ev[-1]["vars"] if ev else {}, "out": out.getvalue()})
+    return json.dumps({"events": ev, "err": err, "errLine": eline, "out": out.getvalue()})
+`;
+let py=null;
+function setPy(st){const el=$("#pyStat");el.className="pystat "+st;el.innerHTML=st==="ready"?ic("check")+"Python جاهز":st==="loading"?ic("gear")+"Python بيتحمّل…":ic("alert")+"من غير Python";}
+setPy("loading");
+(function(){const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
+ s.onload=()=>loadPyodide().then(async p=>{await p.runPythonAsync(PYSRC);py=p;setPy("ready");}).catch(()=>setPy("off"));
+ s.onerror=()=>setPy("off");document.head.appendChild(s);})();
+
+/* ============ code store ============ */
+const defaultCode=v=>codeLines(v).slice(1,-1).join("\n");
+const norm=s=>s.replace(/[ \t]+$/gm,"").trim();
+const CODES={good:()=>defaultCode("good"),bug:()=>defaultCode("bug"),alt1:()=>ALTS[1].c,alt2:()=>ALTS[2].c,alt3:()=>ALTS[3].c,mine:()=>CODE};
+let CODE=defaultCode("good");try{const sv=localStorage.getItem("mm-code");if(sv&&sv.trim())CODE=sv;}catch(e){}
+const typed=V=>Object.fromEntries(Object.entries(V).map(([k,v])=>[k,typeof v==="boolean"?{t:"bool",v:v?"True":"False"}:{t:"int",v:String(v)}]));
+
+/* run any code -> raw steps [{line,B,V,out,err}] */
+async function runCode(code,inp){
+ if(py){let r;try{r=JSON.parse(py.globals.get("trace_run")(code,inp));}catch(e){return {steps:[],err:"Error: "+e.message,out:""};}
+  if(r.err&&!r.events.some(e=>e.line))return {steps:[],err:r.err,errLine:r.errLine,out:r.out||""};
+  const ev=r.events,raw=[];
+  for(let i=0;i<ev.length;i++){const e=ev[i];if(!e.line)continue;const nx=ev[i+1]||e;raw.push({line:e.line,B:e.vars,V:nx.vars,out:nx.out});}
+  if(r.err&&raw.length){const l=raw[raw.length-1];l.err=r.err;l.errLine=r.errLine||l.line;}
+  return {steps:raw,err:r.err,out:r.out};}
+ for(const v of ["good","bug"])if(canon(code)===canon(defaultCode(v))){const vv=parseIn(inp);
+   if(!vv)return {steps:[],err:"ValueError: الـ Input لازم 3 أرقام موجبة",out:""};
+   const S=simulate(v,...vv),raw=[];let pv={};
+   S.forEach(s=>{if(s.line===0||s.line===12){pv=s.V;return;}raw.push({line:s.line,B:typed(pv),V:typed(s.V),out:s.OUT.map(o=>o+"\n").join("")});pv=s.V;});
+   return {steps:raw,out:raw.length?raw[raw.length-1].out:""};}
+ return {steps:[],loading:true,err:py===null&&$("#pyStat").classList.contains("off")?"Python مش متاح من غير إنترنت. جرّبوا كود من «كود جاهز».":"Python لسه بيتحمّل… جرّبوا تاني بعد ثواني.",out:""};}
+
+/* ============ mini Python parser -> standard flowchart ============ */
+function noComment(s){let q=null;for(let i=0;i<s.length;i++){const c=s[i];if(q){if(c==="\\"){i++;continue;}if(c===q)q=null;}else if(c==='"'||c==="'")q=c;else if(c==="#")return s.slice(0,i).trimEnd();}return s;}
+const stripStr=s=>s.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g,'""');
+const bal=s=>{s=stripStr(s);return (s.match(/[([{]/g)||[]).length-(s.match(/[)\]}]/g)||[]).length;};
+function parsePy(code){
+ const raw=code.replace(/\t/g,"    ").split("\n"),L=[];
+ for(let i=0;i<raw.length;i++){let s=noComment(raw[i]).trim();if(!s)continue;const ind=raw[i].match(/^ */)[0].length,lines=[i+1];let d=bal(s);
+  while(d>0&&i+1<raw.length){i++;const s2=noComment(raw[i]).trim();lines.push(i+1);if(s2){s+=" "+s2;d+=bal(s2);}}
+  L.push({n:lines[0],lines,ind,s});}
+ let p=0;
+ const all=st=>st.flatMap(x=>x.type==="if"?[...x.branches.flatMap(b=>[...b.lines,...all(b.body)]),...(x.elseLines||[]),...all(x.elseBody||[])]:x.lines);
+ function body(ind){if(p>=L.length||L[p].ind<=ind)return [];return block(L[p].ind);}
+ function block(ind){const out=[];while(p<L.length&&L[p].ind>=ind){if(L[p].ind>ind){const x=L[p++];out.push({type:"simple",line:x.n,lines:x.lines,text:x.s});continue;}out.push(stmt(ind));}return out;}
+ function stmt(ind){const x=L[p];
+  if(/^if\b/.test(x.s)&&x.s.endsWith(":")){const ch={type:"if",line:x.n,branches:[],elseLines:null,elseBody:null};p++;
+   ch.branches.push({line:x.n,lines:x.lines,test:x.s.slice(2,-1).trim(),body:body(ind)});
+   while(p<L.length&&L[p].ind===ind&&/^elif\b/.test(L[p].s)&&L[p].s.endsWith(":")){const y=L[p++];ch.branches.push({line:y.n,lines:y.lines,test:y.s.slice(4,-1).trim(),body:body(ind)});}
+   if(p<L.length&&L[p].ind===ind&&/^else\s*:$/.test(L[p].s)){ch.elseLines=L[p].lines;p++;ch.elseBody=body(ind);}
+   return ch;}
+  p++;
+  if(x.s.endsWith(":")){const b=body(ind);return {type:"block",line:x.n,lines:[...x.lines,...all(b)],text:x.s};}
+  return {type:"simple",line:x.n,lines:x.lines,text:x.s};}
+ return {tree:L.length?block(L[0].ind):[],all};}
+
+function buildModel(code){
+ const {tree,all}=parsePy(code),M={nodeOfLine:{},testOf:{},edges:{},text:{},vb:[300,200]};
+ code.split("\n").forEach((t,i)=>M.text[i+1]=t);
+ const CW=10.2,AW=9.9,GAP=30,BH=56,DH=90;
+ const trunc=(s,n=30)=>s.length>n?s.slice(0,n-1)+"…":s;
+ function info(st){
+  if(st.type==="if")return {kind:"proc",ar:"",code:trunc("if "+st.branches[0].test+": …")};
+  if(st.type==="block")return {kind:/^(for|while)\b/.test(st.text)?"loop":/^def\b/.test(st.text)?"func":"proc",ar:"",code:trunc(st.text)};
+  const t=st.text;
+  if(/\binput\s*\(/.test(t)){const m=t.match(/^([^=]+?)=(?!=)/);return {kind:"io",ar:"اقرأ",code:trunc(m?m[1].trim():t,28)};}
+  const pm=t.match(/^print\s*\((.*)\)\s*$/);if(pm){let a=pm[1].trim();const sm=a.match(/^(["'])(.*)\1$/);if(sm)a=sm[2];return {kind:"io",ar:"اطبع",code:trunc(a,26)};}
+  return {kind:"proc",ar:"",code:trunc(t)};}
+ const wOf=i=>Math.min(360,Math.max(130,(i.ar?i.ar.length*AW+12:0)+i.code.length*CW+40));
+ let mainHalf=66,decHalf=0,bodyHalf=0,hasChain=false;
+ const meas=x=>{x.inf=info(x);x.w=wOf(x.inf);return x.w/2;};
+ tree.forEach(st=>{if(st.type==="if"){hasChain=true;st.branches.forEach(b=>{b.dw=Math.max(190,trunc(b.test,34).length*CW+80);decHalf=Math.max(decHalf,b.dw/2);b.body.forEach(x=>bodyHalf=Math.max(bodyHalf,meas(x)));});(st.elseBody||[]).forEach(x=>mainHalf=Math.max(mainHalf,meas(x)));}else mainHalf=Math.max(mainHalf,meas(st));});
+ mainHalf=Math.max(mainHalf,decHalf);bodyHalf=Math.max(bodyHalf,65);
+ const MX=mainHalf+14,bodyX=MX+decHalf+46+bodyHalf,busX=bodyX+bodyHalf+20,W=hasChain?busX+14:MX+mainHalf+14;
+ let E="",N="",T="",y=12;
+ const KC2={term:"#16a34a",io:"#d97706",proc:"#7c3aed",dec:"#2563eb",loop:"#0891b2",func:"#db2777"};
+ const shape=(k,cx,cy,w,h)=>{const l=cx-w/2,r=cx+w/2,t=cy-h/2,b=cy+h/2;
+  if(k==="term")return `<ellipse class="sh" cx="${cx}" cy="${cy}" rx="${w/2}" ry="${h/2}"/>`;
+  if(k==="io")return `<polygon class="sh" points="${l+14},${t} ${r},${t} ${r-14},${b} ${l},${b}"/>`;
+  if(k==="dec")return `<polygon class="sh" points="${cx},${t} ${r},${cy} ${cx},${b} ${l},${cy}"/>`;
+  if(k==="loop")return `<polygon class="sh" points="${l+16},${t} ${r-16},${t} ${r},${cy} ${r-16},${b} ${l+16},${b} ${l},${cy}"/>`;
+  if(k==="func")return `<rect class="sh" x="${l}" y="${t}" width="${w}" height="${h}"/><path class="sh2" d="M${l+9} ${t}V${b}M${r-9} ${t}V${b}"/>`;
+  return `<rect class="sh" x="${l}" y="${t}" width="${w}" height="${h}" rx="3"/>`;};
+ const node=(id,k,cx,top,w,h,inf)=>{const cy=top+h/2;
+  const txt=inf.ar?`<text x="${cx}" y="${cy}" dy=".35em" text-anchor="middle" direction="rtl"><tspan class="ar">${inf.ar}</tspan>${inf.code?` <tspan class="m">${esc(inf.code)}</tspan>`:""}</text>`:`<text class="m" x="${cx}" y="${cy}" dy=".35em" text-anchor="middle">${esc(inf.code)}</text>`;
+  N+=`<g class="nd" id="n-${id}" data-n="${id}" style="--k:${KC2[k]}">${shape(k,cx,cy,w,h)}${txt}</g>`;
+  return {id,cx,top,bottom:top+h,cy,left:cx-w/2,right:cx+w/2};};
+ const link=(pd,to)=>{const key=pd.from+">"+to.id;let d;
+  if(pd.bus)d=`M${pd.x} ${pd.y}H${busX}V${to.top-16}H${to.cx}V${to.top-3}`;
+  else if(pd.side)d=`M${pd.x} ${pd.y}H${to.left-3}`;
+  else if(Math.abs(pd.x-to.cx)<1)d=`M${pd.x} ${pd.y}V${to.top-3}`;
+  else d=`M${pd.x} ${pd.y}V${to.top-16}H${to.cx}V${to.top-3}`;
+  M.edges[key]=1;E+=`<path class="ed" data-k="${key}" d="${d}"/>`;
+  if(pd.label)T+=`<text class="lbl ${pd.label==="نعم"?"y":"n"}" data-k="${key}" x="${pd.lx}" y="${pd.ly}" text-anchor="middle">${pd.label}</text>`;};
+ const mapLines=(st,id)=>(st.type==="if"?all([st]):st.lines).forEach(l=>M.nodeOfLine[l]=id);
+ const s0=node("start","term",MX,y,124,44,{ar:"ابدأ",code:""});
+ let pend=[{from:"start",x:MX,y:s0.bottom}];y=s0.bottom+GAP;
+ const seq=(st,cx)=>{const id="L"+st.line,n=node(id,st.inf.kind,cx,y,st.w,BH,st.inf);pend.forEach(pd=>link(pd,n));mapLines(st,id);pend=[{from:id,x:cx,y:n.bottom}];y=n.bottom+GAP;};
+ tree.forEach(st=>{
+  if(st.type!=="if"){seq(st,MX);return;}
+  const ci={branches:[],elseLines:new Set([...(st.elseLines||[]),...all(st.elseBody||[])])},bus=[];let maxB=0;
+  st.branches.forEach((br,k)=>{const id="L"+br.line,d=node(id,"dec",MX,y,br.dw,DH,{ar:"",code:trunc(br.test,34)+" ?"});
+   pend.forEach(pd=>link(pd,d));br.lines.forEach(l=>M.nodeOfLine[l]=id);
+   ci.branches.push({line:br.line,lines:br.lines,bodyLines:new Set(all(br.body))});M.testOf[br.line]={chain:ci,k};
+   let last=null,by=d.cy-BH/2;
+   br.body.forEach((x,j)=>{const xid="L"+x.line,b=node(xid,x.inf.kind,bodyX,by,x.w,BH,x.inf);mapLines(x,xid);
+    if(j===0)link({from:id,x:MX+br.dw/2,y:d.cy,side:true,label:"نعم",lx:MX+br.dw/2+20,ly:d.cy-9},b);else link({from:last.id,x:bodyX,y:last.bottom},b);
+    last=b;by=b.bottom+GAP;});
+   if(last){bus.push({from:last.id,x:last.right,y:last.cy,bus:true});maxB=Math.max(maxB,last.bottom);}
+   else bus.push({from:id,x:MX+br.dw/2,y:d.cy,bus:true,label:"نعم",lx:MX+br.dw/2+20,ly:d.cy-9});
+   pend=[{from:id,x:MX,y:d.bottom,label:"لا",lx:MX+14,ly:d.bottom+16}];
+   y=Math.max(d.bottom+GAP,last?last.bottom+GAP-(DH-BH)/2:0);});
+  (st.elseBody||[]).forEach(x=>seq(x,MX));
+  pend=pend.concat(bus);y=Math.max(y,maxB+GAP+14);});
+ const e0=node("end","term",MX,y,124,44,{ar:"النهاية",code:""});pend.forEach(pd=>link(pd,e0));
+ M.vb=[W,e0.bottom+12];
+ M.svg=`<svg id="fc" class="fc" viewBox="0 0 ${W} ${M.vb[1]}" width="${W}" height="${M.vb[1]}" role="img" aria-label="فلوتشارت مرسوم من الكود"><defs><marker id="ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#94a3b8"/></marker><marker id="mb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2a56"/></marker></defs>${E}${N}${T}</svg>`;
+ return M;}
+
+/* ============ steps: states + narration ============ */
+const PYKW=new Set(["if","elif","else","and","or","not","in","is","True","False","None","print","input","int","map","str","float","len","range","for","while","def","return","split","list","dict"]);
+const usedVars=(t,V)=>[...new Set((stripStr(t||"").match(/[A-Za-z_]\w*/g)||[]).filter(n=>!PYKW.has(n)&&V&&V[n]))];
+const changed=(B,V)=>Object.keys(V||{}).filter(n=>!B||!B[n]||B[n].v!==V[n].v||B[n].t!==V[n].t);
+const vchip=(n,x)=>`<span class="cmp" style="color:${vcol(n)};border-color:${vcol(n)};background:color-mix(in srgb,${vcol(n)} 8%,#fff)">${n} = ${esc(valTxt(x))}</span>`;
+function annotate(raw,model,inp){
+ const steps=[{node:"start",line:null,B:{},V:{},out:""},...raw.map(r=>({...r}))];
+ const lr=raw[raw.length-1];
+ if(lr&&!lr.err)steps.push({node:"end",line:null,B:lr.V,V:lr.V,out:lr.out,last:true});else steps[steps.length-1].last=true;
+ const LS={},NS={},ES={};let prevNode=null;
+ const skip=ls=>ls.forEach(l=>{if(!LS[l])LS[l]="skip";const n=model.nodeOfLine[l];if(n&&!NS[n])NS[n]="skip";});
+ steps.forEach((s,i)=>{
+  for(const k in LS)if(LS[k]==="cur")LS[k]="done";for(const k in NS)if(NS[k]==="cur")NS[k]="done";
+  if(s.line)LS[s.line]="cur";
+  const nd=s.node||model.nodeOfLine[s.line];s.nodeId=nd||null;
+  if(nd){if(prevNode&&prevNode!==nd){const key=prevNode+">"+nd;if(model.edges[key])ES[key]="on";}NS[nd]="cur";prevNode=nd;}
+  const T=s.line&&model.testOf[s.line];
+  if(T){const nx=(steps.slice(i+1).find(x=>x.line)||{}).line,br=T.chain.branches[T.k];s.isTest=true;s.taken=!!(nx&&br.bodyLines.has(nx));
+   if(s.taken){T.chain.branches.forEach((b,j)=>{if(j>T.k)skip([...b.lines,...b.bodyLines]);});skip([...T.chain.elseLines]);}else skip([...br.bodyLines]);}
+  for(const key in model.edges){if(ES[key]==="on")continue;const [a,b]=key.split(">");if(NS[a]==="skip"||NS[b]==="skip")ES[key]="off";}
+  s.LS={...LS};s.NS={...NS};s.ES={...ES};});
+ steps.forEach((s,i)=>s.say=sayFor(s,i,steps,model,inp));
+ return steps;}
+function sayFor(s,i,steps,model,inp){
+ if(s.node==="start")return `${nt("بداية","#16a34a")} الكمبيوتر هيمشي سطر سطر، وكل سطر ليه شكل في الفلوتشارت.`;
+ if(s.node==="end"){const v=parseIn(inp),got=(s.out||"").trim();let r="";
+  if(v){const e=ref(...v);r=got===e?` <b class="ok">${ic("check")} الإجابة صح (${e})</b>`:` <b class="no">${ic("bug")} المتوقع ${e} لكن طلع ${esc(got||"ولا حاجة")}</b>`;}
+  return `${nt("النهاية","#16a34a")} البرنامج خلص.${r}`;}
+ const t=(model.text[s.line]||"").trim(),B=s.B||{},V=s.V||{},fr=changed(B,V);
+ if(s.err)return `${nt("خطأ","#e11d48")} في السطر ${s.errLine||s.line}: <code>${esc(s.err)}</code>`;
+ if(s.isTest){const test=t.replace(/^(if|elif)\s*/,"").replace(/:\s*$/,"");const used=usedVars(test,B);
+  return `${nt(t.startsWith("elif")?"elif":"if","#2563eb")} <code>${esc(test)}</code> ${used.map(n=>vchip(n,B[n])).join(" ")} ${ic("left")} ${s.taken?`<b class="ok">اتحقق: ندخل جوّه</b>`:`<b class="no">ما اتحققش: نكمّل</b>`}`;}
+ if(/\binput\s*\(/.test(t))return `${nt("قراءة","#d97706")} الـ ${cw("input","Input")} دخل الكود واتخزّن في ${cw("var","الذاكرة")}: ${fr.map(n=>vchip(n,V[n])).join(" ")}`;
+ if(/^print\s*\(/.test(t)){const nw=(s.out||"").slice((B&&steps[i-1]?steps[i-1].out:"").length).trim();return `${nt("طباعة","#16a34a")} ${cw("print","print")} بتطلّع <b>${esc(nw)}</b> على الإخراج.`;}
+ if(fr.length){let calc="";const mm=t.match(/(\w+)\s*%\s*(\w+)/);
+  if(mm){const num=w=>/^\d+$/.test(w)?BigInt(w):(B[w]&&B[w].t==="int"?BigInt(B[w].v):null);const a=num(mm[1]),b=num(mm[2]);if(a!==null&&b!==null&&b!==0n)calc=`<code>${a} % ${b}</code> = <b>${((a%b)+b)%b}</b> ${cw("mod","باقي")} · `;}
+  return `${nt("حساب","#7c3aed")} ${calc}${fr.map(n=>vchip(n,V[n])).join(" ")} ${ic("right")} ${cw("var","الذاكرة")}`;}
+ return `${nt("تنفيذ","#1d2a56")} <code>${esc(t)}</code>`;}
+
+/* ============ flowchart view ============ */
+let MODEL=null,FZ="fit";
+function renderFlow(){$("#flowPane").innerHTML=MODEL.svg;applyZoom();}
+function applyZoom(){const svg=$("#fc"),pane=$("#flowPane");if(!svg||!MODEL)return;const [W,H]=MODEL.vb;const tz=+getComputedStyle(document.documentElement).getPropertyValue("--tz")||1;let z=FZ==="fit"?Math.max(Math.min(2.2,(pane.clientWidth-20)/W),.9)*tz:FZ;if(!(z>0))z=1;svg.setAttribute("width",Math.round(W*z));svg.setAttribute("height",Math.round(H*z));}
+$$(".zb").forEach(b=>b.onclick=()=>{const svg=$("#fc");if(!svg)return;const cz=+svg.getAttribute("width")/MODEL.vb[0];FZ=b.dataset.z==="fit"?"fit":Math.max(.5,Math.min(2.4,cz*(b.dataset.z==="in"?1.15:1/1.15)));applyZoom();});
+addEventListener("resize",()=>{if(FZ==="fit")applyZoom();});
+function setFlowStates(s){$$("#fc .nd").forEach(n=>n.dataset.st=s?(s.NS[n.dataset.n]||"idle"):"done");$$("#fc .ed").forEach(e=>e.dataset.st=s?(s.ES[e.dataset.k]||"idle"):"show");}
+function scrollFlowTo(id){if(!id)return;const g=document.getElementById("n-"+id),p=$("#flowPane");if(!g||!p)return;const gr=g.getBoundingClientRect(),pr=p.getBoundingClientRect();
+ const t=(gr.top<pr.top+30||gr.bottom>pr.bottom-30)?p.scrollTop+(gr.top-pr.top)-pr.height/2+gr.height/2:p.scrollTop,l=(gr.left<pr.left+10||gr.right>pr.right-10)?p.scrollLeft+(gr.left-pr.left)-pr.width/2+gr.width/2:p.scrollLeft;p.scrollTo({top:t,left:l,behavior:RM?"auto":"smooth"});}
+
+/* ============ editor ============ */
+const TA=$("#edTA");let editing=true,edT;
+function edRender(){if(typeof fitCode==="function")setTimeout(fitCode,0);const v=TA.value;$("#edHL").innerHTML=hlBlock(v)+"\n ";$("#edGut").innerHTML=v.split("\n").map((_,i)=>`<div>${i+1}</div>`).join("");edSync();}
+function edSync(){$("#edHL").scrollTop=TA.scrollTop;$("#edHL").scrollLeft=TA.scrollLeft;$("#edGut").style.transform=`translateY(${-TA.scrollTop}px)`;}
+function codeChanged(){CODE=TA.value;try{localStorage.setItem("mm-code",CODE);}catch(e){}clearTimeout(edT);edT=setTimeout(()=>{if(!editing)return;if(G.on){guideUpdate();return;}MODEL=buildModel(CODE);renderFlow();setFlowStates(null);},250);}
+TA.addEventListener("input",()=>{edRender();codeChanged();});
+TA.addEventListener("scroll",edSync);
+const insTA=x=>{const s=TA.selectionStart;TA.value=TA.value.slice(0,s)+x+TA.value.slice(TA.selectionEnd);TA.selectionStart=TA.selectionEnd=s+x.length;edRender();codeChanged();};
+TA.addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();start();return;}
+ if(e.key==="Tab"&&!e.shiftKey){e.preventDefault();insTA("    ");return;}
+ if(e.key==="Backspace"&&TA.selectionStart===TA.selectionEnd){const b=TA.value.slice(0,TA.selectionStart),l=b.slice(b.lastIndexOf("\n")+1);if(l.length>=4&&/^ +$/.test(l)){e.preventDefault();const n=l.length%4||4,q=TA.selectionStart;TA.value=TA.value.slice(0,q-n)+TA.value.slice(q);TA.selectionStart=TA.selectionEnd=q-n;edRender();codeChanged();return;}}
+ if(e.key==="Enter"){e.preventDefault();const b=TA.value.slice(0,TA.selectionStart),l=b.slice(b.lastIndexOf("\n")+1);insTA("\n"+l.match(/^ */)[0]+(/:\s*$/.test(l)?"    ":""));}});
+function setEditing(on){editing=on;$("#edwrap").hidden=!on;$("#code").hidden=on;$("#bEdit").hidden=on;if(on){edRender();setTimeout(()=>TA.focus({preventScroll:true}),0);}}
+function loadCode(c){TA.value=c;edRender();codeChanged();resetRun();}
+$("#ver").onchange=()=>{const k=$("#ver").value;if(!k)return;if(G.on){G.on=false;$("#bGuide").classList.remove("on");setI("#bGuide","flow","اكتبوا خطوة بخطوة");}loadCode(CODES[k]());$("#ver").value="";if(k==="bug")$("#say").innerHTML=`${nt("نسخة فيها غلطة","#e11d48")} جرّبوها بـ <code>22 10 2</code>.`;};
+$("#bEdit").onclick=()=>{resetRun();};
+
+/* ============ guided writing: fixed flowchart, one step at a time ============ */
+const gnorm=s=>{s=s.replace(/'/g,'"').replace(/\s+/g," ").trim().replace(/\s*([=%(),:<>!+\-*/\[\]])\s*/g,"$1");
+ s=s.replace(/^(if|elif)\((.*)\):$/,"$1 $2:").replace(/==True\b/g,"");
+ const m=s.match(/^(\w+)=\((.*)\)$/);if(m)s=m[1]+"="+m[2];return s;};
+const codeLinesOf=c=>c.replace(/\t/g,"    ").split("\n").map(l=>noComment(l)).filter(l=>l.trim()).map(l=>({ind:/^\s/.test(l),t:gnorm(l)}));
+const canon=c=>codeLinesOf(c).map(x=>(x.ind?">":"")+x.t).join("\n");
+const GSTEPS=[
+ {node:"L1",lines:[["memo_num, momo_num, k = map(int, input().split())",0]],alt:[['memo_num,momo_num,k=map(int,input().split(" "))']],
+  say:`اقرأوا ${cw("input","الـ 3 أرقام")} وخزّنوهم في <code>memo_num</code> و <code>momo_num</code> و <code>k</code>`,hint:"memo_num, momo_num, k = map(int, input().____())"},
+ {node:"L2",lines:[["memo_ok = memo_num % k == 0",0]],say:`رقم ميمو ${cw("mod","بيقبل القسمة")} على k؟ خزّنوا الإجابة في <code>memo_ok</code>`,hint:"memo_ok = memo_num ___ k == 0"},
+ {node:"L3",lines:[["momo_ok = momo_num % k == 0",0]],say:`ونفس السؤال لمومو، في <code>momo_ok</code>`,hint:"momo_ok = ________ % k == 0"},
+ {node:"L4",lines:[["if memo_ok and momo_ok:",0]],alt:[["if momo_ok and memo_ok:"]],say:`اسألوا: ${cw("and","الاتنين")} بيقبلوا القسمة؟`,hint:"if memo_ok ___ momo_ok:"},
+ {node:"L5",lines:[['print("Both")',1]],say:`لو أيوه: ${cw("print","اطبعوا")} <code>Both</code> (جوّه الـ if بـ 4 مسافات)`,hint:'    print("____")'},
+ {node:"L6",lines:[["elif memo_ok:",0]],say:`ولو لأ، طب ${cw("if","رقم ميمو بس")}؟`,hint:"elif _______:"},
+ {node:"L7",lines:[['print("Memo")',1]],say:`لو أيوه: اطبعوا <code>Memo</code>`,hint:'    print("____")'},
+ {node:"L8",lines:[["elif momo_ok:",0]],say:`ولو لأ، طب رقم مومو بس؟`,hint:"elif _______:"},
+ {node:"L9",lines:[['print("Momo")',1]],say:`لو أيوه: اطبعوا <code>Momo</code>`,hint:'    print("____")'},
+ {node:"L11",lines:[["else:",0],['print("No One")',1]],say:`${cw("if","غير كده")}: اطبعوا <code>No One</code>`,hint:'else:\n    print("______")'}];
+const GEXP=[];GSTEPS.forEach((s,i)=>s.lines.forEach((l,j)=>GEXP.push({step:i,ind:!!l[1],ok:[gnorm(l[0]),...(s.alt||[]).map(a=>gnorm(a[j]||a[0]))],raw:l[0]})));
+const G={on:false,step:0,done:false,hint:0,backup:"",model:null,shown:new Set()};
+function guideProgress(){const U=codeLinesOf(TA.value);let p=0;
+ while(p<U.length&&p<GEXP.length&&GEXP[p].ok.includes(U[p].t)&&GEXP[p].ind===U[p].ind)p++;
+ let step=p<GEXP.length?GEXP[p].step:GSTEPS.length;if(p<GEXP.length&&GEXP[p].step>0&&GEXP.findIndex(x=>x.step===GEXP[p].step)<p)step=GEXP[p].step;
+ const next=U[p],exp=GEXP[p];let st="write";
+ if(next&&exp){const pre=exp.ok.some(o=>o.startsWith(next.t));if(next.t&&!exp.ok.includes(next.t))st=pre?"typing":"wrong";else if(exp.ok.includes(next.t)&&next.ind!==exp.ind)st=exp.ind?"indent":"dedent";}
+ return {p,step,st,done:p>=GEXP.length};}
+function guideStates(){const vis=new Set(["start"]);for(let i=0;i<Math.min(G.step,GSTEPS.length);i++)vis.add(GSTEPS[i].node);
+ const now=G.done?"end":GSTEPS[G.step]?.node;if(G.done)vis.add("end");if(now)vis.add(now);
+ $$("#fc .nd").forEach(n=>{const id=n.dataset.n,was=n.dataset.g;n.removeAttribute("data-st");n.dataset.g=!vis.has(id)?"hide":id===now?"now":"done";
+  if(was==="hide"&&n.dataset.g!=="hide"&&!RM){n.style.transformBox="fill-box";n.style.transformOrigin="center";n.animate([{transform:"scale(.6)",opacity:0},{transform:"scale(1.08)",opacity:1,offset:.7},{transform:"none"}],{duration:550,easing:"ease-out"});}});
+ $$("#fc .ed,#fc .lbl").forEach(e=>{const [a,b]=(e.dataset.k||">").split(">"),on=vis.has(a)&&vis.has(b),was=e.dataset.g;e.removeAttribute("data-st");e.dataset.g=on?"show":"hide";
+  if(on&&was==="hide"&&e.tagName==="path"&&!RM){const L=e.getTotalLength();e.animate([{strokeDasharray:L,strokeDashoffset:L},{strokeDasharray:L,strokeDashoffset:0}],{duration:600,easing:"ease-out"});}});
+ if(now)scrollFlowTo(now);}
+function guideSay(st){
+ if(G.done){$("#say").innerHTML=`${nt("تمام","#16a34a")} <b class="ok">${ic("check")} الكود كامل والفلوتشارت كمان.</b> اضغطوا «شغّل» وتابعوه خطوة بخطوة.`;return;}
+ const S=GSTEPS[G.step],hint=G.hint===1?`<code class="ghint">${esc(S.hint)}</code>`:G.hint===2?`<code class="ghint">${esc(S.lines.map(l=>(l[1]?"    ":"")+l[0]).join("\n"))}</code>`:"";
+ const chip={write:"",typing:`<span class="gst t">${ic("pen")}كمّلوا…</span>`,wrong:`<span class="gst w">${ic("alert")}راجعوا السطر ده</span>`,indent:`<span class="gst w">${ic("alert")}السطر ده لازم يبقى جوّه (4 مسافات)</span>`,dedent:`<span class="gst w">${ic("alert")}السطر ده يبدأ من أول السطر</span>`}[st]||"";
+ $("#say").innerHTML=`${nt(`خطوة ${G.step+1} من ${GSTEPS.length}`,"#d97706")} ${S.say} ${chip} ${hint}<span class="gbtns"><button class="btn sm" id="gHint">${ic("bulb")}${G.hint?"تلميحة أكتر":"تلميحة"}</button><button class="btn sm" id="gFill">${ic("pen")}اكتبهالي</button></span>`;
+ $("#gHint").onclick=()=>{G.hint=Math.min(2,G.hint+1);guideSay(guideProgress().st);};
+ $("#gFill").onclick=()=>{const U=TA.value.replace(/\s+$/,"");const add=S.lines.map(l=>(l[1]?"    ":"")+l[0]).join("\n");
+  const keep=TA.value.split("\n"),pr=guideProgress();let cnt=0,cut=keep.length;for(let i=0;i<keep.length;i++){if(noComment(keep[i]).trim()){if(cnt===pr.p){cut=i;break;}cnt++;}}
+  TA.value=keep.slice(0,cut).join("\n").replace(/\s+$/,"")+(cut?"\n":"")+add+"\n";TA.selectionStart=TA.selectionEnd=TA.value.length;edRender();codeChanged();TA.focus();};}
+function guideUpdate(){if(!G.on)return;const r=guideProgress(),prev=G.step;G.done=r.done;G.step=Math.min(r.step,GSTEPS.length);
+ if(G.step!==prev)G.hint=0;guideStates();guideSay(r.st);
+ if(G.step>prev&&!RM){$("#flowPane").animate([{boxShadow:"inset 0 0 0 0 rgba(22,163,74,0)"},{boxShadow:"inset 0 0 0 6px rgba(22,163,74,.35)"},{boxShadow:"inset 0 0 0 0 rgba(22,163,74,0)"}],{duration:700});}}
+function guideRender(){MODEL=G.model;renderFlow();guideUpdate();}
+function enterGuide(){if(G.on)return;G.on=true;G.backup=TA.value;G.step=0;G.hint=0;G.done=false;G.model=buildModel(defaultCode("good"));
+ $("#bGuide").classList.add("on");setI("#bGuide","x","خروج من الخطوات");
+ TA.value="";edRender();CODE="";resetRun();TA.focus();}
+function exitGuide(restore){if(!G.on)return;G.on=false;$("#bGuide").classList.remove("on");setI("#bGuide","flow","اكتبوا خطوة بخطوة");
+ if(restore&&!TA.value.trim()){TA.value=G.backup;}edRender();codeChanged();resetRun();}
+$("#bGuide").onclick=()=>G.on?exitGuide(true):enterGuide();
+
+/* ============ run & step ============ */
+let steps=[],cur=-1,tok=0,playing=false,runInput="";
+const spd=()=>+$("#spd").value;
+const READY=`${nt("جاهز","#1d2a56")} عدّلوا الكود واضغطوا «شغّل»، أو دوسوا «اكتبوا خطوة بخطوة» وابنوه بنفسكم.`;
+function setNav(){const n=steps.length;$("#cnt").textContent=(cur+1)+" / "+n;$("#bPrev").disabled=cur<=0;$("#bNext").disabled=!n||cur>=n-1;$("#bPlay").disabled=!n;$("#prog").style.width=n?((cur+1)/n*100)+"%":"0";}
+function renderTerm(out,newOut,fin,err){const L=(out||"").split("\n");if(L[L.length-1]==="")L.pop();let h=`<div class="pp">python memo_momo.py</div>`;
+ L.forEach((o,q)=>h+=`<div class="out ${newOut&&q===L.length-1?"new":""}">${esc(o)}</div>`);if(err)h+=`<div class="errl">${esc(err)}</div>`;
+ h+=fin&&!err?`<div class="fin">Process finished</div>`:`<span class="caret">▌</span>`;$("#term").innerHTML=h;}
+function resetRun(){stopPlay();tok++;clearBeams();steps=[];cur=-1;MODEL=buildModel(CODE);renderFlow();setFlowStates(null);AORDER=[];buildMX(4);paintMem({});renderCards({});renderTerm("",false,false);$("#say").innerHTML=READY;setNav();setEditing(true);if(G.on)guideRender();}
+function buildTrace(){setTimeout(fitCode,0);$("#code").innerHTML=CODE.split("\n").map((l,i)=>`<div class="ln" data-st="ghost"><span class="no">${i+1}</span><span class="tx">${hl(l)||" "}</span></div>`).join("");}
+async function start(){if(G.on&&!G.done){toast("كمّلوا الخطوات الأول، أو دوسوا «خروج من الخطوات»");return;}if(G.on){G.on=false;$("#bGuide").classList.remove("on");setI("#bGuide","flow","اكتبوا خطوة بخطوة");}const inp=$("#inp").value.trim();stopPlay();const my=++tok;clearBeams();CODE=TA.value;
+ $("#say").innerHTML=`${nt("تشغيل","#1d2a56")} بنجهّز الكود…`;
+ const R=await runCode(CODE,inp);if(my!==tok)return;
+ if(R.loading){$("#say").innerHTML=`${nt("استنوا","#d97706")} ${R.err}`;return;}
+ MODEL=buildModel(CODE);renderFlow();
+ if(!R.steps.length){setEditing(true);setFlowStates(null);renderTerm(R.out,false,false,R.err||"مفيش أسطر تتنفّذ");$("#say").innerHTML=`${nt("خطأ","#e11d48")} <code>${esc(R.err||"مفيش أسطر تتنفّذ")}</code>`;return;}
+ runInput=inp;steps=annotate(R.steps,MODEL,inp);allocate(steps);paintMem({});renderCards({});
+ setEditing(false);buildTrace();cur=-1;show(0,true);}
+const lineEl=i=>$("#code").children[i]?.querySelector(".tx");
+function scrollLine(i){const el=$("#code").children[i];if(!el)return;const c=$("#code"),t=el.offsetTop-60,bt=el.offsetTop+el.offsetHeight+40;if(t<c.scrollTop)c.scrollTop=t;else if(bt>c.scrollTop+c.clientHeight)c.scrollTop=bt-c.clientHeight;}
+async function show(i,anim){const my=++tok;cur=i;const s=steps[i],prev=i>0?steps[i-1]:{V:{},out:""},A=anim&&!RM,K=spd();setNav();clearBeams();
+ [...$("#code").children].forEach((el,k)=>{const L=k+1,was=el.dataset.st,now=(s.err&&(s.errLine||s.line)===L)?"err":(s.LS[L]||"ghost");el.dataset.st=now;el.classList.remove("typing");if(A&&was==="ghost"&&now!=="ghost"){void el.offsetWidth;el.classList.add("typing");}});
+ if(s.line)scrollLine(s.line-1);
+ setFlowStates(s);scrollFlowTo(s.nodeId);$("#say").innerHTML=s.say;
+ const ok=()=>my===tok,ln=s.line?lineEl(s.line-1):null,nd=s.nodeId?document.querySelector("#n-"+s.nodeId+" .sh"):null;
+ const fresh=changed(prev.V,s.V),outNew=(s.out||"").length>(prev.out||"").length,reads=s.line?usedVars(MODEL.text[s.line],prev.V).filter(n=>!fresh.includes(n)):[];
+ if(A&&ln){
+  paintMem(prev.V);renderCards(prev.V);renderTerm(prev.out,false,false);
+  await sleep(350*K);if(!ok())return;
+  if(nd){await beam(nd,ln,{color:"#1d2a56",k:K,dur:650});if(!ok())return;}
+  if(/\binput\s*\(/.test(MODEL.text[s.line]||"")){await beam($("#inp"),ln,{label:runInput.slice(0,18),color:"#d97706",k:K,dur:800});if(!ok())return;}
+  const firstCard=$("#vc-"+(fresh[0]||reads[0]));if(firstCard){firstCard.scrollIntoView({block:"nearest",inline:"nearest"});await sleep(120);if(!ok())return;}
+  if(reads.length){renderCards(prev.V,[],reads);$("#vc-"+reads[0])?.scrollIntoView({block:"nearest"});await Promise.all(reads.map(n=>beam(ln,$("#vc-"+n),{color:vcol(n),k:K,dur:650})));if(!ok())return;}
+  if(fresh.length){await Promise.all(fresh.map((n,q)=>sleep(q*180*K).then(()=>beam(ln,$("#vc-"+n),{label:valTxt(s.V[n]).slice(0,12),color:vcol(n),k:K,dur:850}))));if(!ok())return;}
+  if(outNew){await beam(ln,$("#term"),{label:((s.out||"").slice((prev.out||"").length).trim()||" ").slice(0,16),color:"#16a34a",k:K,dur:850});if(!ok())return;}}
+ paintMem(s.V,A?fresh:[]);renderCards(s.V,A?fresh:[],reads);renderTerm(s.out,A&&outNew,!!s.last,s.err);
+ if(s.last){$("#nextBtn").classList.add("pulse");$("#bEdit").hidden=false;}}
+function stopPlay(){playing=false;setI("#bPlay","play","تشغيل تلقائي");}
+async function autoplay(){if(playing){stopPlay();tok++;return;}if(!steps.length){await start();if(!steps.length)return;await sleep(1500*spd());}
+ playing=true;setI("#bPlay","pause","إيقاف");if(cur>=steps.length-1){await show(0,false);await sleep(700);}
+ while(playing&&cur<steps.length-1){const t=tok+1;await show(cur+1,true);if(!playing||tok!==t)break;await sleep(1700*spd());}stopPlay();}
+$("#bStart").onclick=start;
+$("#bNext").onclick=()=>{stopPlay();if(cur<steps.length-1)show(cur+1,true);};
+$("#bPrev").onclick=()=>{stopPlay();if(cur>0)show(cur-1,false);};
+$("#bPlay").onclick=autoplay;
+$("#inp").addEventListener("keydown",e=>{if(e.key==="Enter")start();});
+$$(".exb").forEach(b=>b.onclick=()=>{$("#inp").value=b.dataset.ex;start();});
+$("#nameBtn").onclick=()=>{$("#namePop").hidden=!$("#namePop").hidden;};
+function openCode(input,key){goSlide(IDX["s-ide"]);if(key&&key!=="mine")loadCode(CODES[key]());$("#inp").value=input;setTimeout(start,380);}
+
+/* ============ TEST: live simulation (any code) ============ */
+const TESTS=["15 7 3","22 10 2","7 9 3","5 7 2","1 1 1","3 5 10","12 18 6","1000000000000000000 999999999999999999 1000000000000000000"];
+let tVer="good",ttok=0,runAllTok=0;
+$("#cases").innerHTML=TESTS.map(t=>`<button class="case" data-t="${t}" title="${t}">${t}</button>`).join("");
+function miniInit(code){$("#mcode").innerHTML=code.split("\n").map(l=>`<div>${hl(l)||" "}</div>`).join("");$("#mmem").innerHTML="";}
+miniInit(CODES.good());
+$("#tVer").onclick=e=>{const b=e.target.closest("button");if(!b)return;tVer=b.dataset.v;ttok++;runAllTok++;clearBeams();$$("#tVer button").forEach(x=>x.classList.toggle("on",x===b));$("#tRes").innerHTML="";$("#tScore").innerHTML="";miniInit(CODES[tVer]());$$(".case").forEach(c=>c.classList.remove("p","f","on"));$("#sInV").textContent="—";$("#sOutV").textContent="—";$("#sVerd").innerHTML="";};
+const hot=(id,on)=>$(id).classList.toggle("hot",on);
+async function simTest(t,fast){const my=++ttok,ok=()=>my===ttok,v=parseIn(t);if(!v)return null;
+ const code=CODES[tVer](),R=await runCode(code,t);if(!ok())return null;
+ if(R.loading){toast(R.err);return null;}
+ const model=buildModel(code),S=R.steps.length?annotate(R.steps,model,t):[],exp=ref(...v),got=(R.out||"").trim()||(R.err?"Error":"—"),K=fast?.55:1;
+ clearBeams();miniInit(code);["#sIn","#sExec","#sOut"].forEach(x=>hot(x,false));$$(".case").forEach(c=>c.classList.toggle("on",c.dataset.t===t));
+ const names=[];S.forEach(s=>Object.keys(s.V||{}).forEach(n=>{if(!names.includes(n))names.push(n);}));
+ $("#mmem").innerHTML=names.map((n,q)=>`<span class="mchip" id="mm-${n}" style="--c:${VM[n]?VM[n].c:PAL[q%PAL.length]}">${n}<b>?</b></span>`).join("");
+ $("#sOutV").textContent="—";$("#sVerd").innerHTML="";$("#sInV").textContent=t.length>24?t.slice(0,22)+"…":t;
+ hot("#sIn",true);await sleep(450*K);if(!ok())return null;
+ await beam($("#sInV"),$("#mcode"),{label:t.length>14?t.slice(0,12)+"…":t,color:"#d97706",k:K,dur:900,fade:false});if(!ok())return null;
+ hot("#sIn",false);hot("#sExec",true);
+ const rows=$$("#mcode div"),dt=S.length>40?50:220;
+ for(const s of S){if(!ok())return null;
+  rows.forEach((r,k)=>{const L=s.LS[k+1];r.className=(s.err&&s.line===k+1)?"err":L==="cur"?"cur":L==="skip"?"skip":"";});
+  Object.entries(s.V||{}).forEach(([n,x])=>{const c=$("#mm-"+n);if(c){c.classList.add("on");c.querySelector("b").textContent=valTxt(x).slice(0,8);}});
+  await sleep((s.line?dt:60)*K);}
+ if(!ok())return null;
+ await beam($("#sExec"),$("#sOutV"),{label:got.slice(0,14),color:R.err?"#e11d48":"#16a34a",k:K,dur:900,fade:false});if(!ok())return null;
+ hot("#sExec",false);hot("#sOut",true);$("#sOutV").textContent=got;
+ const pass=got===exp;
+ $("#sVerd").innerHTML=`<span class="vchip" style="background:${pass?"var(--gr)":"var(--rd)"}">${ic(pass?"check":"x")}${pass?"زي المتوقع":"المتوقع "+exp}</span>`;
+ const cs=$(`.case[data-t="${t}"]`);if(cs){cs.classList.remove("p","f");cs.classList.add(pass?"p":"f");}
+ $("#tRes").scrollTop=1e6;$("#tRes").insertAdjacentHTML("beforeend",`<div class="trow ${pass?"ok":"bad"}"><span class="i">${t}</span><span class="o ok">${exp}</span><span class="o ${pass?"ok":"no"}">${esc(got)}</span><span>${ic(pass?"check":"x",`color:${pass?"var(--gr)":"var(--rd)"};width:22px;height:22px`)}</span><button class="btn sm" data-see="${t}">${ic("eye")}خطوة بخطوة</button></div>`);$("#tRes").scrollTop=1e6;
+ await sleep(500*K);hot("#sOut",false);return pass;}
+$("#tAll").onclick=async()=>{const me=++runAllTok;$("#tRes").innerHTML="";$("#tScore").innerHTML="";let okc=0,n=0;
+ for(const t of TESTS){const r=await simTest(t,true);if(r===null||me!==runAllTok)return;n++;if(r)okc++;}
+ $("#tScore").innerHTML=okc===n?`<span class="ok">${ic("trophy")} عدّى ${okc} من ${n}</span>`:`<span class="no">${ic("bug")} عدّى ${okc} من ${n} بس. شوفوا الحالة الحمرا خطوة بخطوة.</span>`;};
+$("#cases").onclick=e=>{const b=e.target.closest(".case");if(b){runAllTok++;simTest(b.dataset.t);}};
+$("#tOne").onclick=()=>{const s=$("#tIn").value.trim().replace(/\s+/g," ");if(!parseIn(s)){toast("3 أرقام موجبة بينهم مسافة، زي 12 18 6");return;}runAllTok++;simTest(s);};
+$("#tIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("#tOne").click();});
+$("#tRes").onclick=e=>{const b=e.target.closest("[data-see]");if(b)openCode(b.dataset.see,tVer);};
+
+/* ============ improve ============ */
+$("#bugCode").innerHTML=hlBlock(codeLines("bug").slice(1,-1).join("\n"));
+$("#flowmini").innerHTML=`<div class="fm hit">${ic("x","color:var(--rd)")}<code>memo_ok</code> True: يطبع <b class="no">Memo</b> ويخرج</div>
+<div class="fm never">${ic("minus")}<code>momo_ok</code> ما وصلناش</div><div class="fm never">${ic("minus")}<code>memo_ok and momo_ok</code> ما وصلناش أبداً</div>`;
+$("#seeBug").onclick=()=>openCode("22 10 2","bug");
+$("#testBug").onclick=()=>{goSlide(IDX["s-test"]);$('#tVer button[data-v="bug"]').click();setTimeout(()=>$("#tAll").click(),400);};
+const ALTS=[
+ {n:"الأساسي",w:"كل سؤال بيتحسب مرة ويتخزّن باسم واضح.",c:codeLines("good").slice(1,-1).join("\n"),t:["%","bool","elif"]},
+ {n:"الشرط جوّا الـ if",w:"أقصر، بس بنحسب نفس الباقي أكتر من مرة.",c:`memo_num, momo_num, k = map(int, input().split())
+if memo_num % k == 0 and momo_num % k == 0:
+    print("Both")
+elif memo_num % k == 0:
+    print("Memo")
+elif momo_num % k == 0:
+    print("Momo")
+else:
+    print("No One")`,t:["%","and","elif"]},
+ {n:"if جوّا if",w:"شجرة بفرعين، ومستحيل تقع في فخ الترتيب.",c:`memo_num, momo_num, k = map(int, input().split())
+if memo_num % k == 0:
+    if momo_num % k == 0:
+        print("Both")
+    else:
+        print("Memo")
+else:
+    if momo_num % k == 0:
+        print("Momo")
+    else:
+        print("No One")`,t:["nested if"]},
+ {n:"جدول الإجابات",w:"جدول الـ 4 احتمالات بقى كود، من غير if خالص.",c:`memo_num, momo_num, k = map(int, input().split())
+memo_ok = memo_num % k == 0
+momo_ok = momo_num % k == 0
+answers = {
+    (True, True): "Both",
+    (True, False): "Memo",
+    (False, True): "Momo",
+    (False, False): "No One",
+}
+print(answers[(memo_ok, momo_ok)])`,t:["dict","tuple"]}];
+function showAlt(i){$$("#atabs button").forEach((b,k)=>b.classList.toggle("on",k===i));const a=ALTS[i];
+ $("#altv").innerHTML=`<div class="altv"><div class="why">${ic("bulb","color:var(--am)")}${a.w}</div><div class="pre">${hlBlock(a.c)}</div><div style="display:flex;gap:8px;align-items:center">${a.t.map(x=>`<span class="chip">${x}</span>`).join("")}<span style="flex:1"></span><button class="btn sm p" id="altTry">${ic("pen")}جرّبوه في المحرر</button></div></div>`;$("#altTry").onclick=()=>openCode("15 7 3",i?"alt"+i:"good");}
+$("#atabs").innerHTML=ALTS.map((a,i)=>`<button>${i+1}. ${a.n}</button>`).join("");
+$("#atabs").onclick=e=>{const b=e.target.closest("button");if(b)showAlt([...$$("#atabs button")].indexOf(b));};showAlt(0);
+$("#trail").innerHTML=["Idea","Analysis","Design","Code","Test","Improve"].map((s,i)=>`<span style="animation-delay:${i*.1}s">${ic("check")}${s}</span>`).join("");
+
+/* ============ popups ============ */
+const openHint=()=>{$("#hintp").hidden=false;$("#nextBtn").classList.remove("pulse");};
+$("#nextBtn").onclick=()=>{$("#hintp").hidden?openHint():$("#hintp").hidden=true;};
+$("#ctaNext").onclick=openHint;$("#hpx").onclick=()=>$("#hintp").hidden=true;
+$("#fabMem").onclick=()=>openSheet("var");
+
+/* ============ slide navigation ============ */
+const SL=$$(".slide"),IDX={};SL.forEach((s,i)=>IDX[s.id]=i);
+const CH=["Idea","Analysis","Design","Code","Test","Improve"];
+let si=-1;
+$("#chap").innerHTML=CH.map((c,i)=>`<button data-c="${i}"><span>${c}</span><i></i></button>`).join("");
+$("#dots").innerHTML=SL.map((s,i)=>`<button data-i="${i}" aria-label="شريحة ${i+1}"></button>`).join("");
+function goSlide(i){i=Math.max(0,Math.min(SL.length-1,i));if(i===si)return;
+ stopPlay();tok++;ttok++;runAllTok++;clearBeams();const dir=i>si?"fwd":"back";if(si>=0)SL[si].classList.remove("on","fwd","back");si=i;const s=SL[si];
+ s.classList.add("on",dir);s.scrollTop=0;
+ fitSlide();
+ if(s.id==="s-ide"){setTimeout(()=>{applyZoom();fitCode();if(steps.length&&cur>=0)show(cur,false);},40);}
+ const ch=+s.dataset.ch;$$("#chap button").forEach((b,k)=>{b.classList.toggle("on",k===ch);b.classList.toggle("done",k<ch);});
+ $$("#dots button").forEach((b,k)=>b.classList.toggle("on",k===si));$("#cntr").textContent=(si+1)+" / "+SL.length;
+ $("#prevS").disabled=si===0;$("#nextS").disabled=si===SL.length-1;
+ if(s.id==="s-end")$("#nextBtn").classList.add("pulse");
+ try{localStorage.setItem("mm-slide",si);}catch(e){}}
+$("#prevS").onclick=()=>goSlide(si-1);$("#nextS").onclick=()=>goSlide(si+1);
+$("#startDeck").onclick=()=>goSlide(1);
+$("#dots").onclick=e=>{const b=e.target.closest("button");if(b)goSlide(+b.dataset.i);};
+$("#chap").onclick=e=>{const b=e.target.closest("button");if(b)goSlide(SL.findIndex(s=>+s.dataset.ch===+b.dataset.c));};
+$("#bFull").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen?.().catch(()=>{});};
+$$(".slide").forEach(s=>s.addEventListener("scroll",clearBeams));
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape"){if(!$("#sheet").hidden)closeSheet();else if(!$("#hintp").hidden)$("#hintp").hidden=true;else $("#namePop").hidden=true;return;}
+ if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.target.isContentEditable||!$("#sheet").hidden)return;
+ const run=SL[si].id==="s-ide";
+ if(e.key==="PageDown"){e.preventDefault();goSlide(si+1);return;}if(e.key==="PageUp"){e.preventDefault();goSlide(si-1);return;}
+ if(e.key==="ArrowLeft"){e.preventDefault();if(run&&steps.length&&cur<steps.length-1)$("#bNext").click();else goSlide(si+1);}
+ else if(e.key==="ArrowRight"){e.preventDefault();if(run&&steps.length&&cur>0)$("#bPrev").click();else goSlide(si-1);}
+ else if(e.key===" "&&run){e.preventDefault();steps.length?$("#bNext").click():start();}});
+
+/* ============ whiteboard ============ */
+$("#wbt").innerHTML=[["var","box","متغير"],["cond","branch","شرط"],["loop","repeat","لوب"],["func","gear","فانكشن"],["list","list","ليست"]].map(b=>`<button data-sh="${b[0]}">${ic(b[1])}${b[2]}</button>`).join("")
+ +`<button data-sh="io">Input/Output</button><button data-sh="proc">Process</button><button data-sh="term">Start/End</button><button data-sh="note">${ic("note")}ملاحظة</button><button data-sh="txt">${ic("type")}نص</button>`
+ +`<button data-sh="arr" data-r="0" aria-label="سهم يمين">${ic("right")}</button><button data-sh="arr" data-r="90" aria-label="سهم تحت">${ic("down")}</button><button data-sh="arr" data-r="180" aria-label="سهم شمال">${ic("left")}</button><hr>`
+ +["#1d2a56","#db2777","#2563eb","#16a34a","#d97706","#7c3aed"].map(c=>`<button class="swc" data-c="${c}" style="background:${c}" aria-label="لون"></button>`).join("")
+ +`<hr><button id="wbBig" aria-label="كبّر">${ic("plus")}</button><button id="wbSmall" aria-label="صغّر">${ic("minus")}</button><button id="wbDup">${ic("copy")}نسخة</button><button id="wbDel">${ic("trash")}حذف</button><button id="wbClr">مسح الكل</button>`;
+const WBT={
+ var:`<div class="w-var"><div class="w-box"><span class="ed">5</span></div><span class="ed nm">x</span></div>`,
+ cond:`<div class="w-cond"><svg class="dia" viewBox="0 0 200 110"><polygon points="100,3 197,55 100,107 3,55"/></svg><span class="ed q">x > 3 ؟</span><div class="y"><span>نعم</span><svg viewBox="0 0 34 16"><path d="M2 8H28M22 2l7 6-7 6"/></svg></div><div class="n"><svg viewBox="0 0 16 34"><path d="M8 2V28M2 22l6 7 6-7"/></svg><span>لا</span></div></div>`,
+ loop:`<div class="w-loop"><svg viewBox="0 0 200 40"><path d="M24 36 C24 6,176 6,176 30"/><path d="M168 22l8 10 8-10"/></svg><div class="sq"><i>1</i><i>2</i><i>3</i></div><span class="ed">كرّر 3 مرات</span></div>`,
+ func:`<div class="w-func"><div class="fh"><span class="ed">def اسم(x):</span></div><div class="fb"><span class="ed">الخطوات…</span></div><span class="fi">مدخل →</span><span class="fo">→ مخرج</span></div>`,
+ list:`<div class="w-list"><div class="cells"><b class="ed">15</b><b class="ed">7</b><b class="ed">3</b></div><div class="ix"><i>0</i><i>1</i><i>2</i></div><span class="ed nm">nums</span></div>`,
+ io:`<div class="w-io"><span class="ed">اقرأ x</span></div>`,proc:`<div class="w-proc"><span class="ed">x = x + 1</span></div>`,term:`<div class="w-term"><span class="ed">ابدأ</span></div>`,
+ note:`<div class="w-note"><span class="ed">فكرة…</span></div>`,txt:`<div class="w-txt"><span class="ed">نص</span></div>`,
+ arr:`<svg class="w-arr" viewBox="0 0 110 26"><path d="M4 13H98M86 3l12 10-12 10"/></svg>`};
+const wbs=$("#wbs");let wsel=null,wn=0;
+function wSelect(el){if(wsel)wsel.classList.remove("sel");wsel=el;if(el)el.classList.add("sel");}
+function addW(t,r=0,from){const e=document.createElement("div");e.className="wsh";e.innerHTML=from?from.innerHTML:WBT[t];
+ if(from){e.style.cssText=from.style.cssText;e.style.left=from.offsetLeft+24+"px";e.style.top=from.offsetTop+24+"px";}
+ else{e.style.left=40+(wn%4)*235+"px";e.style.top=30+(Math.floor(wn/4)%3)*165+"px";if(t==="arr"&&r)e.firstElementChild.style.transform=`rotate(${r}deg)`;}
+ wn++;e.querySelectorAll(".ed").forEach(x=>x.contentEditable="false");wbs.appendChild(e);wSelect(e);}
+$$("#wbt [data-sh]").forEach(b=>b.onclick=()=>addW(b.dataset.sh,+(b.dataset.r||0)));
+$$("#wbt .swc").forEach(b=>b.onclick=()=>{if(wsel)wsel.style.setProperty("--sc",b.dataset.c);});
+const wScale=d=>{if(!wsel)return;const s=Math.min(2.5,Math.max(.5,(+wsel.style.getPropertyValue("--s")||1)+d));wsel.style.setProperty("--s",s);};
+$("#wbBig").onclick=()=>wScale(.15);$("#wbSmall").onclick=()=>wScale(-.15);
+$("#wbDup").onclick=()=>{if(wsel)addW(null,0,wsel);};
+$("#wbDel").onclick=()=>{if(wsel){wsel.remove();wsel=null;}};
+$("#wbClr").onclick=()=>{wbs.innerHTML="";wsel=null;wn=0;};
+wbs.addEventListener("pointerdown",e=>{const el=e.target.closest(".wsh");if(!el){wSelect(null);return;}wSelect(el);if(e.target.isContentEditable)return;
+ e.preventDefault();const sx=e.clientX-el.offsetLeft,sy=e.clientY-el.offsetTop;el.setPointerCapture(e.pointerId);el.style.cursor="grabbing";
+ el.onpointermove=v=>{el.style.left=Math.max(-20,Math.min(wbs.clientWidth-30,v.clientX-sx))+"px";el.style.top=Math.max(-10,Math.min(wbs.clientHeight-30,v.clientY-sy))+"px";};
+ el.onpointerup=()=>{el.onpointermove=null;el.style.cursor="";};});
+wbs.addEventListener("dblclick",e=>{const t=e.target.closest(".ed");if(!t)return;t.contentEditable="true";t.focus();const r=document.createRange();r.selectNodeContents(t);const s=getSelection();s.removeAllRanges();s.addRange(r);});
+wbs.addEventListener("focusout",e=>{if(e.target.classList?.contains("ed"))e.target.contentEditable="false";});
+document.addEventListener("keydown",e=>{if(e.key==="Delete"&&wsel&&!$("#wbw").hidden&&!e.target.isContentEditable&&!/INPUT|TEXTAREA/.test(e.target.tagName)){wsel.remove();wsel=null;}});
+$("#openWB").onclick=()=>{const w=$("#wbw");w.hidden=!w.hidden;};$("#wbx").onclick=()=>$("#wbw").hidden=true;
+(function(){const w=$("#wbw"),h=$("#wbh");h.onpointerdown=e=>{if(e.target.closest("button"))return;const dx=e.clientX-w.offsetLeft,dy=e.clientY-w.offsetTop;h.setPointerCapture(e.pointerId);
+ h.onpointermove=v=>{w.style.left=Math.max(0,Math.min(innerWidth-120,v.clientX-dx))+"px";w.style.top=Math.max(0,Math.min(innerHeight-60,v.clientY-dy))+"px";};h.onpointerup=()=>{h.onpointermove=null;};};})();
+addW("var");addW("cond");wSelect(null);
+
+
+/* ============ text size (A- / A+) ============ */
+let TZ=1;try{TZ=+localStorage.getItem("mm-tz")||1;}catch(e){}
+function setTZ(v){TZ=Math.round(Math.max(.8,Math.min(1.6,v))*10)/10;document.documentElement.style.setProperty("--tz",TZ);$("#tzVal").textContent=Math.round(TZ*100)+"%";try{localStorage.setItem("mm-tz",TZ);}catch(e){}clearBeams();if(typeof applyZoom==="function")applyZoom();edRender();}
+$("#tzUp").onclick=()=>setTZ(TZ+.1);$("#tzDown").onclick=()=>setTZ(TZ-.1);
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&(e.key==="="||e.key==="+")){e.preventDefault();setTZ(TZ+.1);}else if((e.ctrlKey||e.metaKey)&&e.key==="-"){e.preventDefault();setTZ(TZ-.1);}});
+setTZ(TZ);
+
+/* ============ fit-to-screen: grow every slide to the screen edges ============ */
+const NOFIT=new Set(["s-ide","s-build"]);
+let fitRO=null,fitRaf=0;
+function fitNow(){const s=SL[si];if(!s||NOFIT.has(s.id))return;const sl=s.querySelector(".sl");if(!sl)return;
+ sl.style.transform="none";
+ const pad=Math.max(14,Math.min(s.clientWidth,s.clientHeight)*.03),aw=s.clientWidth-pad*2,ah=s.clientHeight-pad*2,w=sl.offsetWidth,h=sl.offsetHeight;
+ if(!w||!h)return;const k=Math.max(.5,Math.min(3,aw/w,ah/h));sl.style.transform=`scale(${k})`;}
+function fitSlide(){const s=SL[si];if(fitRO)fitRO.disconnect();if(!s||NOFIT.has(s.id))return;s.classList.add("fit");
+ const sl=s.querySelector(".sl");fitRO=new ResizeObserver(()=>{cancelAnimationFrame(fitRaf);fitRaf=requestAnimationFrame(fitNow);});fitRO.observe(sl);fitNow();}
+addEventListener("resize",()=>{fitNow();fitCode();});
+/* code font grows until the longest line fills the code pane */
+function fitCode(){const ed=!$("#edwrap").hidden,box=ed?$("#edwrap"):$("#code");if(!box||!box.clientWidth)return;
+ const src=ed?(G.on?defaultCode("good"):TA.value):CODE,lines=src.split("\n"),maxc=Math.max(28,...lines.map(l=>l.replace(/\t/g,"    ").length)),n=Math.max(8,lines.length);
+ const gut=ed?$(".edgut").offsetWidth+20:($(".ln .no")?$(".ln .no").offsetWidth+18:70);
+ const byW=(box.clientWidth-gut-14)/(maxc*.602),byH=(box.clientHeight-30)/(n*1.8);
+ const fs=Math.max(14,Math.min(34,byW,Math.max(byH,17)));
+ document.documentElement.style.setProperty("--codefs",fs.toFixed(1)+"px");}
+/* ============ init ============ */
+$("#legSlot").innerHTML=LEGEND;setI("#bEdit","pen","تعديل الكود");setI("#bGuide","flow","اكتبوا خطوة بخطوة");TA.value=CODE;edRender();resetRun();
+let saved=0;try{saved=+localStorage.getItem("mm-slide")||0;}catch(e){}
+goSlide(saved<SL.length?saved:0);
+</script>
+</body>
+</html>
